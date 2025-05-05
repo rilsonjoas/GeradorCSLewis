@@ -84,7 +84,7 @@ const lewisQuotes = [
   },
   {
     quote:
-      "Um jovem que deseja permanecer um ateu convicto não pode ser muito cuidadoso com sua leitura.",
+      "Um jovem que deseja permanecer um ateu convicto precisa ser muito cuidadoso com sua leitura.",
     source: "Surpreendido pela Alegria",
   },
   {
@@ -136,7 +136,7 @@ const lewisQuotes = [
   },
   {
     quote: "Uma coisa boa de ler livros velhos é que as modas não os afetam.",
-    source: "Introdução a 'Sobre a encarnação' de Atanásio",
+    source: "Introdução a Sobre a encarnação de Atanásio",
   },
   {
     quote:
@@ -305,31 +305,31 @@ const lewisQuotes = [
   {
     quote:
       "A paixão é o que nos leva a prometer. O amor é o que nos leva a cumprir as promessas.",
-    source: "C.S. Lewis",
+    source: "C. S. Lewis",
   },
   {
     quote:
       "Se você é produto de um universo materialista, porque não se sente em casa aqui? O peixe reclama de o mar ser molhado?",
-    source: "C.S. Lewis",
+    source: "C. S. Lewis",
   },
   {
     quote:
       "O menor ato de bondade hoje é a captura de um ponto estratégico a partir do qual se poderá ser capaz de seguir para vitórias que você nunca sonhou.",
-    source: "C.S. Lewis",
+    source: "C. S. Lewis",
   },
   {
     quote:
       "Você não pode voltar atrás e mudar o começo, mas pode começar onde está e mudar o final.",
-    source: "C.S. Lewis",
+    source: "C. S. Lewis",
   },
   {
     quote:
       "A vida com Deus não é imune às dificuldades, mas é paz nas dificuldades.",
-    source: "C.S. Lewis",
+    source: "C. S. Lewis",
   },
   {
     quote: "Se você está no caminho errado, voltar atrás significa progresso.",
-    source: "C.S. Lewis",
+    source: "C. S. Lewis",
   },
   {
     quote:
@@ -343,17 +343,17 @@ const lewisQuotes = [
   },
   {
     quote: "Ele nos amou, não porque somos amáveis, mas porque Ele é o amor.",
-    source: "C.S. Lewis",
+    source: "C. S. Lewis",
   },
   {
     quote:
       "Eu oro, porque eu não posso me ajudar. Isso não muda Deus, isso me muda.",
-    source: "C.S. Lewis",
+    source: "C. S. Lewis",
   },
   {
     quote:
       "Não podemos confiar em nós mesmos nem em nossos melhores momentos. A única atitude fatal é se dar por satisfeito com qualquer coisa que não a perfeição.",
-    source: "C.S. Lewis",
+    source: "C. S. Lewis",
   },
   {
     quote:

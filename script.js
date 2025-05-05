@@ -21,22 +21,26 @@ if (
   }
 
   // Função para exibir a citação e a fonte
-  function displayQuote(quoteObj) {
-    if (quoteObj && quoteObj.quote) {
-      quoteTextElement.textContent = `"${quoteObj.quote}"`;
+function displayQuote(quoteObj) {
+  if (quoteObj && quoteObj.quote) {
+    quoteTextElement.textContent = `"${quoteObj.quote}"`;
 
-      if (quoteObj.source) {
-        quoteSourceElement.textContent = `— ${quoteObj.source}`;
-      } else {
-        quoteSourceElement.textContent = "";
-      }
+    if (quoteObj.source) {
+      const affiliateTag = "rilson-20";
+      const amazonSearchUrl = `https://www.amazon.com.br/s?k=${encodeURIComponent(
+        quoteObj.source
+      )}&tag=${affiliateTag}`;
+
+      quoteSourceElement.innerHTML = `— <a href="${amazonSearchUrl}" target="_blank" rel="noopener noreferrer" class="source-link"> ${quoteObj.source}</a>`;
     } else {
-      // Caso algo dê errado ao obter a citação
-      quoteTextElement.textContent = "Não foi possível carregar a citação.";
-      quoteSourceElement.textContent = "";
-      console.error("Erro: Objeto de citação inválido recebido.", quoteObj);
+      quoteSourceElement.innerHTML = ""; 
     }
+  } else {
+    quoteTextElement.textContent = "Não foi possível carregar a citação.";
+    quoteSourceElement.innerHTML = ""; 
+    console.error("Erro: Objeto de citação inválido recebido.", quoteObj);
   }
+}
 
   // Adiciona o Event Listener ao botão para gerar uma nova citação
   quoteButton.addEventListener("click", () => {
