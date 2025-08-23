@@ -19,6 +19,9 @@ const lora = Lora({
 export const metadata: Metadata = {
   title: "Gerador de Citações C. S. Lewis",
   description: "Gere citações inspiradoras de C. S. Lewis.",
+  icons: {
+    icon: '/Lewis.png',
+  },
 };
 
 export default function RootLayout({
@@ -28,9 +31,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${lato.variable} ${lora.variable}`}>
-      <head>
-        <link rel="icon" href="/favicon.ico" />
-      </head>
       <body>
         {children}
       </body>
