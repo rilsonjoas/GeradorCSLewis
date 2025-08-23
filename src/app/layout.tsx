@@ -28,7 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${lato.variable} ${lora.variable}`}>
-      <body>{children}</body>
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+      <body>
+        {children}
+      </body>
     </html>
   );
 }

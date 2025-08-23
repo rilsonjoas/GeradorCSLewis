@@ -53,19 +53,19 @@ export default function QuoteGenerator() {
       </CardHeader>
       <CardContent>
         <a
-          href="https://amzn.to/42HJtHG" // Seu link de afiliado genérico
+          href="https://amzn.to/42HJtHG"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Link para página relacionada a C.S. Lewis na Amazon"
           className="block mx-auto mb-6"
         >
           <Image
-            src="/Lewis.jpg" // Caminho a partir da pasta public
+            src="/Lewis.jpg"
             alt="Retrato de C.S. Lewis"
             width={120}
             height={120}
             className="rounded-full object-cover mx-auto border-4 border-cs-brown-lighter shadow-md"
-            priority // Ajuda no LCP
+            priority
           />
         </a>
 
@@ -96,11 +96,23 @@ export default function QuoteGenerator() {
 
         <Button
           onClick={generateNewQuote}
-          size="lg" // Tamanho do botão ShadCN
+          size="lg"
           className="font-lato font-bold bg-cs-brown-medium text-white hover:bg-cs-brown-light active:bg-cs-brown-dark active:scale-95"
         >
           Gerar nova citação
         </Button>
+
+        <div className="mt-8 text-center text-xs text-cs-brown-light">
+          <span>&copy; 2025 - Desenvolvido por </span>
+          <a
+            href="https://github.com/rilsonjoas"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-cs-brown-medium hover:underline"
+          >
+            Rilson Joás
+          </a>
+        </div>
       </CardContent>
     </Card>
   );
