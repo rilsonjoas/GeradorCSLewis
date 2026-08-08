@@ -17,10 +17,24 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://gerador-cs-lewis.vercel.app"),
   title: "Gerador de Citações C. S. Lewis",
-  description: "Gere citações inspiradoras de C. S. Lewis.",
+  description:
+    "Gere citações inspiradoras de C. S. Lewis sobre fé, razão e vida cristã — com sugestão de livros do autor pra ler mais.",
   icons: {
     icon: '/Lewis.png',
+  },
+  openGraph: {
+    title: "Gerador de Citações C. S. Lewis",
+    description: "Gere citações inspiradoras de C. S. Lewis sobre fé, razão e vida cristã.",
+    type: "website",
+    locale: "pt_BR",
+    images: ["/Lewis.png"],
+  },
+  twitter: {
+    card: "summary",
+    title: "Gerador de Citações C. S. Lewis",
+    description: "Gere citações inspiradoras de C. S. Lewis sobre fé, razão e vida cristã.",
   },
 };
 
