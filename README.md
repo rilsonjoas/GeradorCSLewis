@@ -17,6 +17,43 @@ Este projeto usa:
 -   **Design Responsivo:** A interface se adapta perfeitamente a desktops, tablets e dispositivos móveis.
 -   **Links de Afiliado:** Integração funcional de links de afiliado para monetização e para guiar o usuário.
 
+## Por que isto existe
+
+C.S. Lewis é um dos autores que mais moldou minha forma de pensar fé, razão e imaginação juntas — dá pra ver isso espalhado pelo resto do que eu construo (o próprio "Narniano" vem daí). Este projeto não nasceu de um problema de mercado, nasceu de vontade de ter um jeito bonito e rápido de topar com uma citação dele, com a fonte certa, e poder repassar isso a quem também se interessa.
+
+É de propósito um projeto pequeno — teto baixo por natureza (um gerador de página única não vira plataforma), e não force nele o que não é. O valor aqui é outro: fazer uma coisa simples com o mesmo cuidado que faria uma grande — tipografia elegante, performance real, responsivo de verdade — porque excelência não é proporcional ao tamanho do projeto. Hoje ele já tem monetização discreta (afiliado Amazon) funcionando e SEO técnico corrigido; a visão de futuro é só isso mesmo: continuar sendo a vitrine pequena e bem-feita que é, sem pressão de crescer além do que faz sentido pra ela.
+
+## Identidade aplicada aqui (2026-08-15)
+
+> Fonte: `Identidade visual geral.md` e `Identidade Visual - Guia Técnico
+> (Código).md` no vault. Único projeto que mistura os dois polos de
+> propósito — Lewis escreveu Nárnia (Biblioteca) **e** a Trilogia
+> Espacial (Céus), e Sehnsucht é conceito dele mesmo. Teto baixo por
+> natureza (página única), então poucos itens, sem inflar.
+
+- [ ] Citações de Nárnia/ficção mais alegórica → moldura `frame-tondo` +
+      paleta padrão (canela/dourado/bege)
+- [ ] Citações sobre anseio/Sehnsucht/céus/eternidade → `.bg-ceus` +
+      `.halo-glow` no card da citação — a única página do portfólio
+      pequeno que já demonstra o sistema inteiro num só lugar
+- [ ] `.signature-italic` no nome da obra de origem de cada citação
+
+## Conexões com o cluster A Biblioteca (2026-08-16)
+
+- [ ] **Citação do dia no Lecionário** — espaço rotativo puxando do
+      mesmo pool de citações, com link "mais citações" de volta pra cá.
+      Ver `lecionario/ROADMAP.md`, seção 4.7 (lado recíproco) — depende
+      de confirmar se os dados aqui são exportáveis como JSON simples
+- [ ] **Post editorial (Narniano/Instagram, não é item de código aqui)**:
+      "os clássicos que Lewis leu, em domínio público" — o próprio Lewis
+      não é PD ainda (morreu 1963, só ~2033+), então o Scriptorium não
+      pode hospedar texto dele; a saída é conteúdo editorial sobre os
+      autores que ele citava (Boécio, padres da igreja) que já são PD,
+      linkando pro Scriptorium. Ver `scriptorium-divinum/ROADMAP.md`
+- [ ] **Rodapé cruzado** — mesmo item nos outros 3 projetos do cluster
+      (ver `lecionario/ROADMAP.md` 4.8), link estático, sem integração
+      de dado
+
 ## 🛠️ Tecnologias Utilizadas
 
 | Tecnologia      | Descrição                                                              |

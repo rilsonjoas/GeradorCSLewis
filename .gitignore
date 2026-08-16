@@ -15,4 +15,4 @@ yarn-error.log*
 
 # Outros arquivos comuns a ignorar
 .DS_Store
-Thumbs.db
+Thumbs.dbtsconfig.tsbuildinfo
