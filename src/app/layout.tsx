@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Lato, Lora } from "next/font/google"; // Importar fontes
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
 // Configurar as fontes
 const lato = Lato({
@@ -44,9 +45,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${lato.variable} ${lora.variable}`}>
+    <html
+      lang="pt-BR"
+      className={`${lato.variable} ${lora.variable}`}
+      suppressHydrationWarning
+    >
       <body>
-        {children}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

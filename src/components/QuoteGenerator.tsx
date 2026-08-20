@@ -45,9 +45,9 @@ export default function QuoteGenerator() {
   };
 
   return (
-    <Card className="w-full max-w-2xl text-center shadow-lg border-t-4 border-cs-brown-medium bg-white">
+    <Card className="w-full max-w-2xl text-center shadow-lg border-t-4 border-cs-brown-medium bg-white dark:border-cs-beige dark:bg-cs-brown-dark">
       <CardHeader className="pb-4">
-        <CardTitle className="text-2xl font-lato font-bold text-cs-brown-medium">
+        <CardTitle className="text-2xl font-lato font-bold text-cs-brown-medium dark:text-cs-beige">
           Gerador de citações de C. S. Lewis
         </CardTitle>
       </CardHeader>
@@ -64,32 +64,32 @@ export default function QuoteGenerator() {
             alt="Retrato de C.S. Lewis"
             width={120}
             height={120}
-            className="rounded-full object-cover mx-auto border-4 border-cs-brown-lighter shadow-md"
+            className="rounded-full object-cover mx-auto border-4 border-cs-brown-lighter shadow-md dark:border-cs-beige/60"
             priority
           />
         </a>
 
-        <blockquote className="font-lora text-xl md:text-2xl italic text-cs-brown-dark mb-3 min-h-[100px] flex items-center justify-center">
+        <blockquote className="font-lora text-xl md:text-2xl italic text-cs-brown-dark dark:text-cs-beige mb-3 min-h-[100px] flex items-center justify-center">
           {currentQuote
             ? `"${currentQuote.quote}"`
             : "Clique no botão abaixo para gerar uma citação inspiradora!"}
         </blockquote>
 
         {currentQuote && currentQuote.source && (
-          <CardDescription className="font-lora text-base text-cs-brown-light mb-8 min-h-[1.2em]">
+          <CardDescription className="font-lora text-base text-cs-brown-light dark:text-cs-brown-lighter mb-8 min-h-[1.2em]">
             —{" "}
             <a
               href={getAmazonSearchUrl(currentQuote.source)}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-cs-brown-dark hover:underline"
+              className="hover:text-cs-brown-dark dark:hover:text-cs-beige hover:underline"
             >
               {currentQuote.source}
             </a>
           </CardDescription>
         )}
         {!currentQuote && (
-          <p className="font-lora text-base text-cs-brown-light mb-8 min-h-[1.2em]">
+          <p className="font-lora text-base text-cs-brown-light dark:text-cs-brown-lighter mb-8 min-h-[1.2em]">
             {/* Espaço para manter altura quando não há fonte */}
           </p>
         )}
@@ -97,18 +97,18 @@ export default function QuoteGenerator() {
         <Button
           onClick={generateNewQuote}
           size="lg"
-          className="font-lato font-bold bg-cs-brown-medium text-white hover:bg-cs-brown-light active:bg-cs-brown-dark active:scale-95"
+          className="font-lato font-bold bg-cs-brown-medium text-white hover:bg-cs-brown-light active:bg-cs-brown-dark active:scale-95 dark:bg-cs-beige dark:text-cs-brown-dark dark:hover:bg-cs-gradient-dark dark:active:bg-cs-brown-lighter"
         >
           Gerar nova citação
         </Button>
 
-        <div className="mt-8 text-center text-xs text-cs-brown-light">
+        <div className="mt-8 text-center text-xs text-cs-brown-light dark:text-cs-brown-lighter">
           <span>&copy; 2025 - Desenvolvido por </span>
           <a
             href="https://github.com/rilsonjoas"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-cs-brown-medium hover:underline"
+            className="text-cs-brown-medium dark:text-cs-beige hover:underline"
           >
             Rilson Joás
           </a>
