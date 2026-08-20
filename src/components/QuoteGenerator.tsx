@@ -1,6 +1,6 @@
 "use client"; // Essencial para componentes com interatividade (useState, useEffect, event handlers)
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { lewisQuotes, Quote } from "@/lib/quotes"; // Importar citações e tipo
 import { Button } from "@/components/ui/button"; // Importar Button do ShadCN
@@ -11,11 +11,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"; // Importar Card do ShadCN
+import { ShareCard } from "@/components/ShareCard";
 
 const affiliateTag = "rilson-20"; // Seu tag de afiliado
 
 export default function QuoteGenerator() {
   const [currentQuote, setCurrentQuote] = useState<Quote | null>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const shareCardRef = useRef<HTMLDivElement>(null);
 
   const getRandomQuote = (): Quote => {
     if (!lewisQuotes || lewisQuotes.length === 0) {
@@ -42,6 +45,23 @@ export default function QuoteGenerator() {
     return `https://www.amazon.com.br/s?k=${encodeURIComponent(
       source
     )}&tag=${affiliateTag}`;
+  };
+
+  const handleDownloadImage = async () => {
+    if (!shareCardRef.current || !currentQuote) return;
+    setIsDownloading(true);
+    try {
+      const { default: html2canvas } = await import("html2canvas");
+      const canvas = await html2canvas(shareCardRef.current, { scale: 1 });
+      const link = document.createElement("a");
+      link.download = `citacao-cs-lewis-${Date.now()}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    } catch (error) {
+      console.error("Falha ao gerar imagem da citação:", error);
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   return (
@@ -94,14 +114,28 @@ export default function QuoteGenerator() {
           </p>
         )}
 
-        <Button
-          onClick={generateNewQuote}
-          size="lg"
-          className="font-lato font-bold bg-cs-brown-medium text-white hover:bg-cs-brown-light active:bg-cs-brown-dark active:scale-95 dark:bg-cs-beige dark:text-cs-brown-dark dark:hover:bg-cs-gradient-dark dark:active:bg-cs-brown-lighter"
-        >
-          Gerar nova citação
-        </Button>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Button
+            onClick={generateNewQuote}
+            size="lg"
+            className="font-lato font-bold bg-cs-brown-medium text-white hover:bg-cs-brown-light active:bg-cs-brown-dark active:scale-95 dark:bg-cs-beige dark:text-cs-brown-dark dark:hover:bg-cs-gradient-dark dark:active:bg-cs-brown-lighter"
+          >
+            Gerar nova citação
+          </Button>
+
+          <Button
+            onClick={handleDownloadImage}
+            disabled={!currentQuote || isDownloading}
+            size="lg"
+            variant="outline"
+            className="font-lato font-bold border-cs-brown-medium text-cs-brown-medium hover:bg-cs-brown-medium hover:text-white dark:border-cs-beige dark:text-cs-beige dark:hover:bg-cs-beige dark:hover:text-cs-brown-dark"
+          >
+            {isDownloading ? "Gerando imagem..." : "Baixar como imagem"}
+          </Button>
+        </div>
       </CardContent>
+
+      {currentQuote && <ShareCard ref={shareCardRef} quote={currentQuote} />}
     </Card>
   );
 }
