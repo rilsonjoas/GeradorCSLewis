@@ -101,18 +101,6 @@ export default function QuoteGenerator() {
         >
           Gerar nova citação
         </Button>
-
-        <div className="mt-8 text-center text-xs text-cs-brown-light dark:text-cs-brown-lighter">
-          <span>&copy; 2025 - Desenvolvido por </span>
-          <a
-            href="https://github.com/rilsonjoas"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-cs-brown-medium dark:text-cs-beige hover:underline"
-          >
-            Rilson Joás
-          </a>
-        </div>
       </CardContent>
     </Card>
   );

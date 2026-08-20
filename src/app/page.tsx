@@ -1,5 +1,6 @@
 import QuoteGenerator from "@/components/QuoteGenerator";
 import { ModeToggle } from "@/components/ModeToggle";
+import { ClusterFooter } from "@/components/ClusterFooter";
 
 export default function HomePage() {
   return (
@@ -8,6 +9,7 @@ export default function HomePage() {
         <ModeToggle />
       </header>
       <QuoteGenerator />
+      <ClusterFooter />
     </main>
   );
 }

@@ -50,9 +50,10 @@ C.S. Lewis é um dos autores que mais moldou minha forma de pensar fé, razão e
       pode hospedar texto dele; a saída é conteúdo editorial sobre os
       autores que ele citava (Boécio, padres da igreja) que já são PD,
       linkando pro Scriptorium. Ver `scriptorium-divinum/ROADMAP.md`
-- [ ] **Rodapé cruzado** — mesmo item nos outros 3 projetos do cluster
-      (ver `lecionario/ROADMAP.md` 4.8), link estático, sem integração
-      de dado
+- [x] **Rodapé cruzado** (2026-08-20) — `ClusterFooter`, links pra
+      Narniano, Bíblia na Arte, Scriptorium e Lecionário. Falta o lado
+      recíproco nos outros 3 projetos do cluster (ver
+      `lecionario/ROADMAP.md` 4.8)
 
 ## 🛠️ Tecnologias Utilizadas
 
