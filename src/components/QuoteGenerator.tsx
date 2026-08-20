@@ -141,7 +141,7 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
           <CardDescription
             className={cn(
               "font-lora text-base mb-8 min-h-[1.2em]",
-              isCeus ? "text-[var(--luz-estelar)]/80" : "text-cs-brown-light dark:text-cs-brown-lighter"
+              isCeus ? "text-[var(--luz-estelar)]/80" : "text-cs-brown-light dark:text-[var(--dourado)]"
             )}
           >
             —{" "}
@@ -151,7 +151,9 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
               rel="noopener noreferrer"
               className={cn(
                 "signature-italic hover:underline",
-                isCeus && "!text-[var(--luz-estelar)]"
+                isCeus
+                  ? "!text-[var(--luz-estelar)]"
+                  : "dark:text-[var(--dourado)]" // 1.95:1 sem isso — falha WCAG AA
               )}
             >
               {currentQuote.source}
@@ -159,7 +161,7 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
           </CardDescription>
         )}
         {!currentQuote && (
-          <p className="font-lora text-base text-cs-brown-light dark:text-cs-brown-lighter mb-8 min-h-[1.2em]">
+          <p className="font-lora text-base text-cs-brown-light dark:text-[var(--dourado)] mb-8 min-h-[1.2em]">
             {/* Espaço para manter altura quando não há fonte */}
           </p>
         )}
