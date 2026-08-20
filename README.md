@@ -31,12 +31,20 @@ C.S. Lewis é um dos autores que mais moldou minha forma de pensar fé, razão e
 > Espacial (Céus), e Sehnsucht é conceito dele mesmo. Teto baixo por
 > natureza (página única), então poucos itens, sem inflar.
 
-- [ ] Citações de Nárnia/ficção mais alegórica → moldura `frame-tondo` +
-      paleta padrão (canela/dourado/bege)
-- [ ] Citações sobre anseio/Sehnsucht/céus/eternidade → `.bg-ceus` +
-      `.halo-glow` no card da citação — a única página do portfólio
-      pequeno que já demonstra o sistema inteiro num só lugar
-- [ ] `.signature-italic` no nome da obra de origem de cada citação
+- [x] Moldura no retrato do Lewis (2026-08-20) — borda dourada dupla
+      inspirada em `.frame-tondo`, adaptada pro tamanho de avatar deste
+      projeto (o original do Guia é 320px, feito pra retrato de
+      destaque). Aplicada sempre, não condicional — o próprio Guia
+      Técnico já trata `frame-tondo` como padrão geral pra "retratos/
+      avatares e citações de autor", não como algo ligado a tema
+- [x] Citações sobre anseio/Sehnsucht/céus/eternidade → `.bg-ceus` +
+      `.halo-glow` no card da citação (2026-08-20) — 4 de 76 citações
+      marcadas com `theme: "ceus"` em `quotes.ts` (achadas por varredura
+      de palavra-chave + confirmação de contexto, não a esmo). É a
+      única página do portfólio pequeno que já demonstra o sistema
+      inteiro num só lugar
+- [x] `.signature-italic` no nome da obra de origem de cada citação
+      (2026-08-20) — incondicional, aplicado em todas
 
 ## Conexões com o cluster A Biblioteca (2026-08-16)
 

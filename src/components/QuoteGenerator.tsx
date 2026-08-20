@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"; // Importar Card do ShadCN
 import { ShareCard } from "@/components/ShareCard";
+import { cn } from "@/lib/utils";
 
 const affiliateTag = "rilson-20"; // Seu tag de afiliado
 
@@ -32,6 +33,10 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
 
   const currentQuote: Quote | null =
     currentIndex !== null ? lewisQuotes[currentIndex] : null;
+  // Registro "Os Céus" do Design Narniano — só as citações de
+  // Sehnsucht/anseio/eternidade (ver theme em quotes.ts), não uma cor
+  // aleatória por sorteio.
+  const isCeus = currentQuote?.theme === "ceus";
 
   const generateNewQuote = () => {
     if (!lewisQuotes || lewisQuotes.length === 0) return; // não deveria acontecer
@@ -76,9 +81,21 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
   };
 
   return (
-    <Card className="w-full max-w-2xl text-center shadow-lg border-t-4 border-cs-brown-medium bg-white dark:border-cs-beige dark:bg-cs-brown-dark">
+    <Card
+      className={cn(
+        "w-full max-w-2xl text-center shadow-lg border-t-4 transition-colors duration-500",
+        isCeus
+          ? "bg-ceus halo-glow border-transparent"
+          : "border-cs-brown-medium bg-white dark:border-cs-beige dark:bg-cs-brown-dark"
+      )}
+    >
       <CardHeader className="pb-4">
-        <CardTitle className="text-2xl font-lato font-bold text-cs-brown-medium dark:text-cs-beige">
+        <CardTitle
+          className={cn(
+            "text-2xl font-lato font-bold",
+            isCeus ? "text-[var(--luz-estelar)]" : "text-cs-brown-medium dark:text-cs-beige"
+          )}
+        >
           Gerador de citações de C. S. Lewis
         </CardTitle>
       </CardHeader>
@@ -90,30 +107,52 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
           aria-label="Link para página relacionada a C.S. Lewis na Amazon"
           className="block mx-auto mb-6"
         >
+          {/* Moldura inspirada em .frame-tondo (Design Narniano) — mesma
+              borda dourada dupla, adaptada pro tamanho de avatar deste
+              projeto (o original é 320px, feito pra retrato de destaque,
+              não pra avatar ao lado do gerador) */}
           <Image
             src="/Lewis.jpg"
             alt="Retrato de C.S. Lewis"
             width={120}
             height={120}
-            className="rounded-full object-cover mx-auto border-4 border-cs-brown-lighter shadow-md dark:border-cs-beige/60"
+            className={cn(
+              "rounded-full object-cover mx-auto shadow-md border-4",
+              isCeus
+                ? "border-double border-[6px] border-[var(--luz-estelar)]"
+                : "border-double border-[var(--dourado)]"
+            )}
             priority
           />
         </a>
 
-        <blockquote className="font-lora text-xl md:text-2xl italic text-cs-brown-dark dark:text-cs-beige mb-3 min-h-[100px] flex items-center justify-center">
+        <blockquote
+          className={cn(
+            "font-lora text-xl md:text-2xl italic mb-3 min-h-[100px] flex items-center justify-center",
+            isCeus ? "text-[var(--luz-estelar)]" : "text-cs-brown-dark dark:text-cs-beige"
+          )}
+        >
           {currentQuote
             ? `"${currentQuote.quote}"`
             : "Clique no botão abaixo para gerar uma citação inspiradora!"}
         </blockquote>
 
         {currentQuote && currentQuote.source && (
-          <CardDescription className="font-lora text-base text-cs-brown-light dark:text-cs-brown-lighter mb-8 min-h-[1.2em]">
+          <CardDescription
+            className={cn(
+              "font-lora text-base mb-8 min-h-[1.2em]",
+              isCeus ? "text-[var(--luz-estelar)]/80" : "text-cs-brown-light dark:text-cs-brown-lighter"
+            )}
+          >
             —{" "}
             <a
               href={getAmazonSearchUrl(currentQuote.source)}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-cs-brown-dark dark:hover:text-cs-beige hover:underline"
+              className={cn(
+                "signature-italic hover:underline",
+                isCeus && "!text-[var(--luz-estelar)]"
+              )}
             >
               {currentQuote.source}
             </a>
@@ -129,7 +168,12 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
           <Button
             onClick={generateNewQuote}
             size="lg"
-            className="font-lato font-bold bg-cs-brown-medium text-white hover:bg-cs-brown-light active:bg-cs-brown-dark active:scale-95 dark:bg-cs-beige dark:text-cs-brown-dark dark:hover:bg-cs-gradient-dark dark:active:bg-cs-brown-lighter"
+            className={cn(
+              "font-lato font-bold active:scale-95",
+              isCeus
+                ? "bg-[var(--luz-estelar)] text-[var(--espaco-profundo)] hover:opacity-90"
+                : "bg-cs-brown-medium text-white hover:bg-cs-brown-light active:bg-cs-brown-dark dark:bg-cs-beige dark:text-cs-brown-dark dark:hover:bg-cs-gradient-dark dark:active:bg-cs-brown-lighter"
+            )}
           >
             Gerar nova citação
           </Button>
@@ -139,7 +183,12 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
             disabled={!currentQuote || isDownloading}
             size="lg"
             variant="outline"
-            className="font-lato font-bold border-cs-brown-medium text-cs-brown-medium hover:bg-cs-brown-medium hover:text-white dark:border-cs-beige dark:text-cs-beige dark:hover:bg-cs-beige dark:hover:text-cs-brown-dark"
+            className={cn(
+              "font-lato font-bold",
+              isCeus
+                ? "border-[var(--luz-estelar)] text-[var(--luz-estelar)] hover:bg-[var(--luz-estelar)] hover:text-[var(--espaco-profundo)]"
+                : "border-cs-brown-medium text-cs-brown-medium hover:bg-cs-brown-medium hover:text-white dark:border-cs-beige dark:text-cs-beige dark:hover:bg-cs-beige dark:hover:text-cs-brown-dark"
+            )}
           >
             {isDownloading ? "Gerando imagem..." : "Baixar como imagem"}
           </Button>
