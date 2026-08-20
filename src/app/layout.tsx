@@ -17,7 +17,7 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://gerador-cs-lewis.vercel.app"),
+  metadataBase: new URL("https://cslewis.narniano.com"),
   title: "Gerador de Citações C. S. Lewis",
   description:
     "Gere citações inspiradoras de C. S. Lewis sobre fé, razão e vida cristã — com sugestão de livros do autor pra ler mais.",

@@ -2,7 +2,7 @@
 
 Este é um projeto web interativo que gera citações inspiradoras e profundas do renomado escritor e teólogo C. S. Lewis. A aplicação foi construída com tecnologias modernas, focando em uma experiência de usuário limpa, elegante e responsiva.
 
-**🔗 Acesse a aplicação:** https://gerador-cs-lewis.vercel.app/
+**🔗 Acesse a aplicação:** https://cslewis.narniano.com/
 
 ## ✨ Visão Geral do Projeto
 
