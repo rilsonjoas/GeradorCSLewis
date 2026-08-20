@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { lewisQuotes, Quote } from "@/lib/quotes"; // Importar citações e tipo
 import { Button } from "@/components/ui/button"; // Importar Button do ShadCN
 import {
@@ -15,30 +16,40 @@ import { ShareCard } from "@/components/ShareCard";
 
 const affiliateTag = "rilson-20"; // Seu tag de afiliado
 
-export default function QuoteGenerator() {
-  const [currentQuote, setCurrentQuote] = useState<Quote | null>(null);
+interface QuoteGeneratorProps {
+  // Índice inicial fixo — usado por /citacao/[id], onde o link já
+  // aponta pra uma citação específica. Sem isso, sorteia ao montar.
+  initialQuoteId?: number;
+}
+
+export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) {
+  const router = useRouter();
+  const [currentIndex, setCurrentIndex] = useState<number | null>(
+    initialQuoteId ?? null
+  );
   const [isDownloading, setIsDownloading] = useState(false);
   const shareCardRef = useRef<HTMLDivElement>(null);
 
-  const getRandomQuote = (): Quote => {
-    if (!lewisQuotes || lewisQuotes.length === 0) {
-      // Fallback caso o array esteja vazio (não deveria acontecer)
-      return {
-        quote: "Erro ao carregar citações.",
-        source: "Sistema",
-      };
-    }
-    const randomIndex = Math.floor(Math.random() * lewisQuotes.length);
-    return lewisQuotes[randomIndex];
-  };
+  const currentQuote: Quote | null =
+    currentIndex !== null ? lewisQuotes[currentIndex] : null;
 
   const generateNewQuote = () => {
-    setCurrentQuote(getRandomQuote());
+    if (!lewisQuotes || lewisQuotes.length === 0) return; // não deveria acontecer
+    const randomIndex = Math.floor(Math.random() * lewisQuotes.length);
+    setCurrentIndex(randomIndex);
+    // Mantém a URL sempre apontando pra citação em tela — é o que faz
+    // "compartilhar o link" funcionar em qualquer momento, sem precisar
+    // de um botão de "copiar link" separado (issue #3).
+    router.replace(`/citacao/${randomIndex}`, { scroll: false });
   };
 
   useEffect(() => {
-    // Exibe uma citação inicial quando o componente é montado
-    generateNewQuote();
+    // Se não veio de /citacao/[id] (ou seja, é a home "/"), sorteia uma
+    // citação inicial ao montar.
+    if (initialQuoteId === undefined) {
+      generateNewQuote();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Array de dependências vazio para rodar apenas uma vez na montagem
 
   const getAmazonSearchUrl = (source: string): string => {
