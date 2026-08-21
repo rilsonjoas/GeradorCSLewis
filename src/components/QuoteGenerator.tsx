@@ -45,10 +45,6 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
 
   const currentQuote: Quote | null =
     currentIndex !== null ? lewisQuotes[currentIndex] : null;
-  // Registro "Os Céus" do Design Narniano — só as citações de
-  // Sehnsucht/anseio/eternidade (ver theme em quotes.ts), não uma cor
-  // aleatória por sorteio.
-  const isCeus = currentQuote?.theme === "ceus";
 
   const generateNewQuote = () => {
     if (!lewisQuotes || lewisQuotes.length === 0) return; // não deveria acontecer
@@ -126,21 +122,9 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
   };
 
   return (
-    <Card
-      className={cn(
-        "w-full max-w-2xl text-center shadow-lg border-t-4 transition-colors duration-500",
-        isCeus
-          ? "bg-ceus halo-glow border-transparent"
-          : "border-cs-brown-medium bg-white dark:border-cs-beige dark:bg-cs-brown-dark"
-      )}
-    >
+    <Card className="w-full max-w-2xl text-center shadow-lg border-t-4 border-cs-brown-medium bg-white dark:border-cs-beige dark:bg-cs-brown-dark">
       <CardHeader className="pb-4">
-        <CardTitle
-          className={cn(
-            "text-2xl font-lato font-bold",
-            isCeus ? "text-[var(--luz-estelar)]" : "text-cs-brown-medium dark:text-cs-beige"
-          )}
-        >
+        <CardTitle className="text-2xl font-lato font-bold text-cs-brown-medium dark:text-cs-beige">
           Gerador de citações de C. S. Lewis
         </CardTitle>
       </CardHeader>
@@ -161,21 +145,15 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
             alt="Retrato de C.S. Lewis"
             width={120}
             height={120}
-            className={cn(
-              "rounded-full object-cover mx-auto shadow-md border-4",
-              isCeus
-                ? "border-double border-[6px] border-[var(--luz-estelar)]"
-                : "border-double border-[var(--dourado)]"
-            )}
+            className="rounded-full object-cover mx-auto shadow-md border-4 border-double border-[var(--dourado)]"
             priority
           />
         </a>
 
         <blockquote
           className={cn(
-            "font-lora italic mb-3 min-h-[100px] flex items-center justify-center",
-            QUOTE_FONT_SIZES[fontSizeIndex],
-            isCeus ? "text-[var(--luz-estelar)]" : "text-cs-brown-dark dark:text-cs-beige"
+            "font-lora italic mb-3 min-h-[100px] flex items-center justify-center text-cs-brown-dark dark:text-cs-beige",
+            QUOTE_FONT_SIZES[fontSizeIndex]
           )}
         >
           {currentQuote
@@ -189,12 +167,7 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
             onClick={() => changeFontSize(-1)}
             disabled={fontSizeIndex === 0}
             aria-label="Diminuir tamanho da fonte da citação"
-            className={cn(
-              "w-7 h-7 flex items-center justify-center rounded-full border text-xs font-lato font-bold disabled:opacity-30 disabled:cursor-not-allowed",
-              isCeus
-                ? "border-[var(--luz-estelar)] text-[var(--luz-estelar)] hover:bg-[var(--luz-estelar)]/20"
-                : "border-cs-brown-lighter text-cs-brown-medium hover:bg-cs-brown-lighter/30 dark:border-cs-beige dark:text-cs-beige dark:hover:bg-cs-beige/20"
-            )}
+            className="w-7 h-7 flex items-center justify-center rounded-full border text-xs font-lato font-bold disabled:opacity-30 disabled:cursor-not-allowed border-cs-brown-lighter text-cs-brown-medium hover:bg-cs-brown-lighter/30 dark:border-cs-beige dark:text-cs-beige dark:hover:bg-cs-beige/20"
           >
             A-
           </button>
@@ -203,35 +176,20 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
             onClick={() => changeFontSize(1)}
             disabled={fontSizeIndex === QUOTE_FONT_SIZES.length - 1}
             aria-label="Aumentar tamanho da fonte da citação"
-            className={cn(
-              "w-7 h-7 flex items-center justify-center rounded-full border text-xs font-lato font-bold disabled:opacity-30 disabled:cursor-not-allowed",
-              isCeus
-                ? "border-[var(--luz-estelar)] text-[var(--luz-estelar)] hover:bg-[var(--luz-estelar)]/20"
-                : "border-cs-brown-lighter text-cs-brown-medium hover:bg-cs-brown-lighter/30 dark:border-cs-beige dark:text-cs-beige dark:hover:bg-cs-beige/20"
-            )}
+            className="w-7 h-7 flex items-center justify-center rounded-full border text-xs font-lato font-bold disabled:opacity-30 disabled:cursor-not-allowed border-cs-brown-lighter text-cs-brown-medium hover:bg-cs-brown-lighter/30 dark:border-cs-beige dark:text-cs-beige dark:hover:bg-cs-beige/20"
           >
             A+
           </button>
         </div>
 
         {currentQuote && currentQuote.source && (
-          <CardDescription
-            className={cn(
-              "font-lora text-base mb-8 min-h-[1.2em]",
-              isCeus ? "text-[var(--luz-estelar)]/80" : "text-cs-brown-light dark:text-[var(--dourado)]"
-            )}
-          >
+          <CardDescription className="font-lora text-base mb-8 min-h-[1.2em] text-cs-brown-light dark:text-[var(--dourado)]">
             —{" "}
             <a
               href={getAmazonSearchUrl(currentQuote.source)}
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(
-                "signature-italic hover:underline",
-                isCeus
-                  ? "!text-[var(--luz-estelar)]"
-                  : "dark:text-[var(--dourado)]" // 1.95:1 sem isso — falha WCAG AA
-              )}
+              className="signature-italic hover:underline dark:text-[var(--dourado)]" // 1.95:1 sem isso — falha WCAG AA
             >
               {currentQuote.source}
             </a>
@@ -247,12 +205,7 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
           <Button
             onClick={generateNewQuote}
             size="lg"
-            className={cn(
-              "font-lato font-bold active:scale-95",
-              isCeus
-                ? "bg-[var(--luz-estelar)] text-[var(--espaco-profundo)] hover:opacity-90"
-                : "bg-cs-brown-medium text-white hover:bg-cs-brown-light active:bg-cs-brown-dark dark:bg-cs-beige dark:text-cs-brown-dark dark:hover:bg-cs-gradient-dark dark:active:bg-cs-brown-lighter"
-            )}
+            className="font-lato font-bold active:scale-95 bg-cs-brown-medium text-white hover:bg-cs-brown-light active:bg-cs-brown-dark dark:bg-cs-beige dark:text-cs-brown-dark dark:hover:bg-cs-gradient-dark dark:active:bg-cs-brown-lighter"
           >
             Gerar nova citação
           </Button>
@@ -262,12 +215,7 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
             disabled={!currentQuote || isDownloading}
             size="lg"
             variant="outline"
-            className={cn(
-              "font-lato font-bold",
-              isCeus
-                ? "border-[var(--luz-estelar)] text-[var(--luz-estelar)] hover:bg-[var(--luz-estelar)] hover:text-[var(--espaco-profundo)]"
-                : "border-cs-brown-medium text-cs-brown-medium hover:bg-cs-brown-medium hover:text-white dark:border-cs-beige dark:text-cs-beige dark:hover:bg-cs-beige dark:hover:text-cs-brown-dark"
-            )}
+            className="font-lato font-bold border-cs-brown-medium text-cs-brown-medium hover:bg-cs-brown-medium hover:text-white dark:border-cs-beige dark:text-cs-beige dark:hover:bg-cs-beige dark:hover:text-cs-brown-dark"
           >
             {isDownloading ? "Gerando imagem..." : "Baixar como imagem"}
           </Button>
