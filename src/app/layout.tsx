@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Lato, Lora } from "next/font/google"; // Importar fontes
+import { Lato, Lora, Cormorant_Garamond } from "next/font/google"; // Importar fontes
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
 // Configurar as fontes
 const lato = Lato({
@@ -16,8 +17,17 @@ const lora = Lora({
   variable: "--font-lora", // Para usar com Tailwind
 });
 
+// Fonte de destaque do Design Narniano (--font-display) — usada só no
+// .signature-italic do nome da obra, não substitui Lato/Lora no resto.
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  style: ["italic"],
+  weight: ["500"],
+  variable: "--font-display",
+});
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://gerador-cs-lewis.vercel.app"),
+  metadataBase: new URL("https://cslewis.narniano.com"),
   title: "Gerador de Citações C. S. Lewis",
   description:
     "Gere citações inspiradoras de C. S. Lewis sobre fé, razão e vida cristã — com sugestão de livros do autor pra ler mais.",
@@ -44,9 +54,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${lato.variable} ${lora.variable}`}>
+    <html
+      lang="pt-BR"
+      className={`${lato.variable} ${lora.variable} ${cormorant.variable}`}
+      suppressHydrationWarning
+    >
       <body>
-        {children}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

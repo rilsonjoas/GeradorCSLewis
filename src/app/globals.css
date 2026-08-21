@@ -62,3 +62,50 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Design Narniano — só os tokens/classes que este projeto usa de fato
+   (fonte: Identidade Visual - Guia Técnico (Código).md no vault). Não
+   copia o sistema inteiro, só o "registro Céus" que dá ao GeradorCSLewis
+   sua assinatura própria (único projeto que mistura Biblioteca e Céus). */
+:root {
+  --dourado: #b49a60;
+  --canela: #7a4e2d;
+  --espaco-profundo: #0b0e23;
+  --nebulosa: #4c3b6e;
+  --luz-estelar: #f4efe1;
+  --graca-azul: #4a6fa5;
+  --gradiente-ceus: radial-gradient(
+    circle at 30% 20%,
+    var(--luz-estelar) 0%,
+    var(--graca-azul) 35%,
+    var(--nebulosa) 65%,
+    var(--espaco-profundo) 100%
+  );
+}
+
+/* Itálico como gesto assinatura — usado no nome da obra de cada citação */
+.signature-italic {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--canela);
+}
+
+.halo-glow {
+  position: relative;
+}
+
+.halo-glow::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(circle, var(--luz-estelar) 0%, transparent 70%);
+  opacity: 0.25;
+  filter: blur(24px);
+  z-index: -1;
+}
+
+.bg-ceus {
+  background: var(--gradiente-ceus);
+  color: var(--luz-estelar);
+}

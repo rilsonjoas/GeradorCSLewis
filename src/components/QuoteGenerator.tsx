@@ -1,7 +1,8 @@
 "use client"; // Essencial para componentes com interatividade (useState, useEffect, event handlers)
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { lewisQuotes, Quote } from "@/lib/quotes"; // Importar citações e tipo
 import { Button } from "@/components/ui/button"; // Importar Button do ShadCN
 import {
@@ -11,6 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"; // Importar Card do ShadCN
+import { ShareCard } from "@/components/ShareCard";
+import { cn } from "@/lib/utils";
 
 const affiliateTag = "rilson-20"; // Seu tag de afiliado
 
@@ -25,29 +28,44 @@ const QUOTE_FONT_SIZES = [
 const DEFAULT_FONT_SIZE_INDEX = 2;
 const FONT_SIZE_STORAGE_KEY = "cslewis-quote-font-size";
 
-export default function QuoteGenerator() {
-  const [currentQuote, setCurrentQuote] = useState<Quote | null>(null);
-  const [fontSizeIndex, setFontSizeIndex] = useState(DEFAULT_FONT_SIZE_INDEX);
+interface QuoteGeneratorProps {
+  // Índice inicial fixo — usado por /citacao/[id], onde o link já
+  // aponta pra uma citação específica. Sem isso, sorteia ao montar.
+  initialQuoteId?: number;
+}
 
-  const getRandomQuote = (): Quote => {
-    if (!lewisQuotes || lewisQuotes.length === 0) {
-      // Fallback caso o array esteja vazio (não deveria acontecer)
-      return {
-        quote: "Erro ao carregar citações.",
-        source: "Sistema",
-      };
-    }
-    const randomIndex = Math.floor(Math.random() * lewisQuotes.length);
-    return lewisQuotes[randomIndex];
-  };
+export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) {
+  const router = useRouter();
+  const [currentIndex, setCurrentIndex] = useState<number | null>(
+    initialQuoteId ?? null
+  );
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [fontSizeIndex, setFontSizeIndex] = useState(DEFAULT_FONT_SIZE_INDEX);
+  const shareCardRef = useRef<HTMLDivElement>(null);
+
+  const currentQuote: Quote | null =
+    currentIndex !== null ? lewisQuotes[currentIndex] : null;
+  // Registro "Os Céus" do Design Narniano — só as citações de
+  // Sehnsucht/anseio/eternidade (ver theme em quotes.ts), não uma cor
+  // aleatória por sorteio.
+  const isCeus = currentQuote?.theme === "ceus";
 
   const generateNewQuote = () => {
-    setCurrentQuote(getRandomQuote());
+    if (!lewisQuotes || lewisQuotes.length === 0) return; // não deveria acontecer
+    const randomIndex = Math.floor(Math.random() * lewisQuotes.length);
+    setCurrentIndex(randomIndex);
+    // Mantém a URL sempre apontando pra citação em tela — é o que faz
+    // "compartilhar o link" funcionar em qualquer momento, sem precisar
+    // de um botão de "copiar link" separado (issue #3).
+    router.replace(`/citacao/${randomIndex}`, { scroll: false });
   };
 
   useEffect(() => {
-    // Exibe uma citação inicial quando o componente é montado
-    generateNewQuote();
+    // Se não veio de /citacao/[id] (ou seja, é a home "/"), sorteia uma
+    // citação inicial ao montar.
+    if (initialQuoteId === undefined) {
+      generateNewQuote();
+    }
 
     // Restaura a preferência de tamanho de fonte salva (se houver) — em
     // useEffect, não no useState inicial, pra não divergir da renderização
@@ -63,6 +81,7 @@ export default function QuoteGenerator() {
     } catch {
       // localStorage indisponível (modo privado, etc.) — segue com o padrão
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Array de dependências vazio para rodar apenas uma vez na montagem
 
   const getAmazonSearchUrl = (source: string): string => {
@@ -89,10 +108,39 @@ export default function QuoteGenerator() {
     });
   };
 
+  const handleDownloadImage = async () => {
+    if (!shareCardRef.current || !currentQuote) return;
+    setIsDownloading(true);
+    try {
+      const { default: html2canvas } = await import("html2canvas");
+      const canvas = await html2canvas(shareCardRef.current, { scale: 1 });
+      const link = document.createElement("a");
+      link.download = `citacao-cs-lewis-${Date.now()}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    } catch (error) {
+      console.error("Falha ao gerar imagem da citação:", error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
-    <Card className="w-full max-w-2xl text-center shadow-lg border-t-4 border-cs-brown-medium bg-white">
+    <Card
+      className={cn(
+        "w-full max-w-2xl text-center shadow-lg border-t-4 transition-colors duration-500",
+        isCeus
+          ? "bg-ceus halo-glow border-transparent"
+          : "border-cs-brown-medium bg-white dark:border-cs-beige dark:bg-cs-brown-dark"
+      )}
+    >
       <CardHeader className="pb-4">
-        <CardTitle className="text-2xl font-lato font-bold text-cs-brown-medium">
+        <CardTitle
+          className={cn(
+            "text-2xl font-lato font-bold",
+            isCeus ? "text-[var(--luz-estelar)]" : "text-cs-brown-medium dark:text-cs-beige"
+          )}
+        >
           Gerador de citações de C. S. Lewis
         </CardTitle>
       </CardHeader>
@@ -104,18 +152,31 @@ export default function QuoteGenerator() {
           aria-label="Link para página relacionada a C.S. Lewis na Amazon"
           className="block mx-auto mb-6"
         >
+          {/* Moldura inspirada em .frame-tondo (Design Narniano) — mesma
+              borda dourada dupla, adaptada pro tamanho de avatar deste
+              projeto (o original é 320px, feito pra retrato de destaque,
+              não pra avatar ao lado do gerador) */}
           <Image
             src="/Lewis.jpg"
             alt="Retrato de C.S. Lewis"
             width={120}
             height={120}
-            className="rounded-full object-cover mx-auto border-4 border-cs-brown-lighter shadow-md"
+            className={cn(
+              "rounded-full object-cover mx-auto shadow-md border-4",
+              isCeus
+                ? "border-double border-[6px] border-[var(--luz-estelar)]"
+                : "border-double border-[var(--dourado)]"
+            )}
             priority
           />
         </a>
 
         <blockquote
-          className={`font-lora ${QUOTE_FONT_SIZES[fontSizeIndex]} italic text-cs-brown-dark mb-3 min-h-[100px] flex items-center justify-center`}
+          className={cn(
+            "font-lora italic mb-3 min-h-[100px] flex items-center justify-center",
+            QUOTE_FONT_SIZES[fontSizeIndex],
+            isCeus ? "text-[var(--luz-estelar)]" : "text-cs-brown-dark dark:text-cs-beige"
+          )}
         >
           {currentQuote
             ? `"${currentQuote.quote}"`
@@ -128,7 +189,12 @@ export default function QuoteGenerator() {
             onClick={() => changeFontSize(-1)}
             disabled={fontSizeIndex === 0}
             aria-label="Diminuir tamanho da fonte da citação"
-            className="w-7 h-7 flex items-center justify-center rounded-full border border-cs-brown-lighter text-cs-brown-medium text-xs font-lato font-bold hover:bg-cs-brown-lighter/30 disabled:opacity-30 disabled:cursor-not-allowed"
+            className={cn(
+              "w-7 h-7 flex items-center justify-center rounded-full border text-xs font-lato font-bold disabled:opacity-30 disabled:cursor-not-allowed",
+              isCeus
+                ? "border-[var(--luz-estelar)] text-[var(--luz-estelar)] hover:bg-[var(--luz-estelar)]/20"
+                : "border-cs-brown-lighter text-cs-brown-medium hover:bg-cs-brown-lighter/30 dark:border-cs-beige dark:text-cs-beige dark:hover:bg-cs-beige/20"
+            )}
           >
             A-
           </button>
@@ -137,51 +203,78 @@ export default function QuoteGenerator() {
             onClick={() => changeFontSize(1)}
             disabled={fontSizeIndex === QUOTE_FONT_SIZES.length - 1}
             aria-label="Aumentar tamanho da fonte da citação"
-            className="w-7 h-7 flex items-center justify-center rounded-full border border-cs-brown-lighter text-cs-brown-medium text-xs font-lato font-bold hover:bg-cs-brown-lighter/30 disabled:opacity-30 disabled:cursor-not-allowed"
+            className={cn(
+              "w-7 h-7 flex items-center justify-center rounded-full border text-xs font-lato font-bold disabled:opacity-30 disabled:cursor-not-allowed",
+              isCeus
+                ? "border-[var(--luz-estelar)] text-[var(--luz-estelar)] hover:bg-[var(--luz-estelar)]/20"
+                : "border-cs-brown-lighter text-cs-brown-medium hover:bg-cs-brown-lighter/30 dark:border-cs-beige dark:text-cs-beige dark:hover:bg-cs-beige/20"
+            )}
           >
             A+
           </button>
         </div>
 
         {currentQuote && currentQuote.source && (
-          <CardDescription className="font-lora text-base text-cs-brown-light mb-8 min-h-[1.2em]">
+          <CardDescription
+            className={cn(
+              "font-lora text-base mb-8 min-h-[1.2em]",
+              isCeus ? "text-[var(--luz-estelar)]/80" : "text-cs-brown-light dark:text-[var(--dourado)]"
+            )}
+          >
             —{" "}
             <a
               href={getAmazonSearchUrl(currentQuote.source)}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-cs-brown-dark hover:underline"
+              className={cn(
+                "signature-italic hover:underline",
+                isCeus
+                  ? "!text-[var(--luz-estelar)]"
+                  : "dark:text-[var(--dourado)]" // 1.95:1 sem isso — falha WCAG AA
+              )}
             >
               {currentQuote.source}
             </a>
           </CardDescription>
         )}
         {!currentQuote && (
-          <p className="font-lora text-base text-cs-brown-light mb-8 min-h-[1.2em]">
+          <p className="font-lora text-base text-cs-brown-light dark:text-[var(--dourado)] mb-8 min-h-[1.2em]">
             {/* Espaço para manter altura quando não há fonte */}
           </p>
         )}
 
-        <Button
-          onClick={generateNewQuote}
-          size="lg"
-          className="font-lato font-bold bg-cs-brown-medium text-white hover:bg-cs-brown-light active:bg-cs-brown-dark active:scale-95"
-        >
-          Gerar nova citação
-        </Button>
-
-        <div className="mt-8 text-center text-xs text-cs-brown-light">
-          <span>&copy; 2025 - Desenvolvido por </span>
-          <a
-            href="https://github.com/rilsonjoas"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-cs-brown-medium hover:underline"
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Button
+            onClick={generateNewQuote}
+            size="lg"
+            className={cn(
+              "font-lato font-bold active:scale-95",
+              isCeus
+                ? "bg-[var(--luz-estelar)] text-[var(--espaco-profundo)] hover:opacity-90"
+                : "bg-cs-brown-medium text-white hover:bg-cs-brown-light active:bg-cs-brown-dark dark:bg-cs-beige dark:text-cs-brown-dark dark:hover:bg-cs-gradient-dark dark:active:bg-cs-brown-lighter"
+            )}
           >
-            Rilson Joás
-          </a>
+            Gerar nova citação
+          </Button>
+
+          <Button
+            onClick={handleDownloadImage}
+            disabled={!currentQuote || isDownloading}
+            size="lg"
+            variant="outline"
+            className={cn(
+              "font-lato font-bold",
+              isCeus
+                ? "border-[var(--luz-estelar)] text-[var(--luz-estelar)] hover:bg-[var(--luz-estelar)] hover:text-[var(--espaco-profundo)]"
+                : "border-cs-brown-medium text-cs-brown-medium hover:bg-cs-brown-medium hover:text-white dark:border-cs-beige dark:text-cs-beige dark:hover:bg-cs-beige dark:hover:text-cs-brown-dark"
+            )}
+          >
+            {isDownloading ? "Gerando imagem..." : "Baixar como imagem"}
+          </Button>
         </div>
       </CardContent>
+
+      {currentQuote && <ShareCard ref={shareCardRef} quote={currentQuote} />}
     </Card>
   );
 }

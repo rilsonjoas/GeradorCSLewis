@@ -1,9 +1,16 @@
 export interface Quote {
   quote: string;
   source: string;
+  // Marca as citações de Sehnsucht/anseio/eternidade — o registro "Os
+  // Céus" do Design Narniano. Não é toda citação "profunda"; é
+  // especificamente a fome pelo infinito que nenhuma experiência deste
+  // mundo satisfaz (o próprio conceito de Lewis). Achadas por varredura
+  // de palavra-chave + leitura de contexto, não a esmo — só 4 de 76
+  // bateram de verdade (2026-08-20).
+  theme?: "ceus";
 }
 
-export const lewisQuotes = [
+export const lewisQuotes: Quote[] = [
   {
     quote:
       "A amizade nasce no momento em que uma pessoa diz para outra: 'O quê! Você também? Pensei que eu era o único!'",
@@ -18,6 +25,7 @@ export const lewisQuotes = [
     quote:
       "Ao descobrir em mim um desejo que nenhuma experiência deste mundo poderia satisfazer, a explicação mais provável é que eu tenha sido feito para outro mundo.",
     source: "Cristianismo Puro e Simples",
+    theme: "ceus",
   },
   {
     quote:
@@ -81,6 +89,7 @@ export const lewisQuotes = [
   {
     quote: "A alegria é um assunto levado a sério no Céu.",
     source: "Oração: Cartas a Malcolm",
+    theme: "ceus",
   },
   {
     quote:
@@ -241,6 +250,7 @@ export const lewisQuotes = [
     quote:
       "Os livros ou a música onde pensamos estar a beleza nos trairão, se confiarmos neles. Pois eles não são a coisa em si; são somente a fragrância de uma flor que ainda não encontramos.",
     source: "O Peso da Glória",
+    theme: "ceus",
   },
   {
     quote:
@@ -261,6 +271,7 @@ export const lewisQuotes = [
     quote:
       "O Céu, uma vez alcançado, terá efeito retroativo e transformará em glória até mesmo essa agonia.",
     source: "O Grande Abismo",
+    theme: "ceus",
   },
   {
     quote:
@@ -434,6 +445,7 @@ export const lewisQuotes = [
     quote:
       "A coisa mais doce em toda a minha vida tem sido o anseio de chegar à montanha, de encontrar o lugar de onde veio toda a beleza — o meu país, o lugar onde eu deveria ter nascido.",
     source: "Até que Tenhamos Rostos",
+    theme: "ceus",
   },
   {
     quote:

@@ -1,9 +1,10 @@
-import QuoteGenerator from "@/components/QuoteGenerator"; 
+import QuoteGenerator from "@/components/QuoteGenerator";
+import { PageShell } from "@/components/PageShell";
 
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-gradient-to-b from-cs-gradient-light to-cs-gradient-dark">
+    <PageShell>
       <QuoteGenerator />
-    </main>
+    </PageShell>
   );
 }
