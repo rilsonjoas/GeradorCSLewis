@@ -37,12 +37,14 @@ C.S. Lewis é um dos autores que mais moldou minha forma de pensar fé, razão e
       destaque). Aplicada sempre, não condicional — o próprio Guia
       Técnico já trata `frame-tondo` como padrão geral pra "retratos/
       avatares e citações de autor", não como algo ligado a tema
-- [x] Citações sobre anseio/Sehnsucht/céus/eternidade → `.bg-ceus` +
-      `.halo-glow` no card da citação (2026-08-20) — 4 de 76 citações
-      marcadas com `theme: "ceus"` em `quotes.ts` (achadas por varredura
-      de palavra-chave + confirmação de contexto, não a esmo). É a
-      única página do portfólio pequeno que já demonstra o sistema
-      inteiro num só lugar
+- [x] ~~Citações sobre anseio/Sehnsucht/céus/eternidade → `.bg-ceus` +
+      `.halo-glow` no card da citação~~ — **removido em 2026-08-20**, no
+      mesmo dia em que entrou. O usuário viu ao vivo (light mode) e o
+      azul destoava do resto do site sem necessidade; pediu tonalidade
+      única em toda citação. O campo `theme: "ceus"` continua marcado em
+      5 citações de `quotes.ts` (curadoria de Sehnsucht ainda válida),
+      só não afeta mais o visual — se um uso futuro quiser reaproveitar
+      a marcação (ex. filtro/seção), os dados já estão lá
 - [x] `.signature-italic` no nome da obra de origem de cada citação
       (2026-08-20) — incondicional, aplicado em todas
 
@@ -63,6 +65,23 @@ C.S. Lewis é um dos autores que mais moldou minha forma de pensar fé, razão e
       recíproco nos outros 3 projetos do cluster (ver
       `lecionario/ROADMAP.md` 4.8)
 
+## 📚 Citações (2026-08-20)
+
+O acervo foi de **75 para 165 citações**, todas extraídas das notas de
+leitura do vault do autor (seção "Citações" de cada nota de livro, com
+página/edição registrada). Critério de curadoria:
+- só livros com edição confirmada em português (evita citação em
+  inglês no card)
+- exclui notas do vault com aviso de citação fabricada/não verificada
+  já documentado lá (achado real: um lote antigo tinha citações que
+  não se sustentaram numa checagem)
+- só trechos autocontidos — sem fragmento de diálogo ou meio de
+  argumento que só faz sentido com o parágrafo ao redor
+
+A busca da Amazon (`getAmazonSearchUrl`) inclui `"C. S. Lewis"` junto
+com o título no termo de busca — sem isso, títulos genéricos (ex.
+"Milagres") podiam cair em resultado de outro livro/autor.
+
 ## 🛠️ Tecnologias Utilizadas
 
 | Tecnologia      | Descrição                                                              |
@@ -79,18 +98,18 @@ C.S. Lewis é um dos autores que mais moldou minha forma de pensar fé, razão e
 Siga os passos abaixo para rodar o projeto em sua máquina.
 
 **1. Pré-requisitos:**
-   - [Node.js](https://nodejs.org/) (versão 18.17 ou superior)
-   - [pnpm](https://pnpm.io/) (ou `npm`/`yarn`)
+   - [Node.js](https://nodejs.org/) 22 (é o que roda em produção, ver `Dockerfile`)
+   - `npm` — o projeto usa `package-lock.json`, não `pnpm-lock.yaml`
 
 **2. Clone o Repositório:**
    ```bash
-   git clone https://github.com/seu-usuario/gerador-citacoes-cs-lewis.git
-   cd gerador-citacoes-cs-lewis
+   git clone https://github.com/rilsonjoas/GeradorCSLewis.git
+   cd GeradorCSLewis
    ```
 
 **3. Instale as Dependências:**
    ```bash
-   pnpm install
+   npm install
    ```
 
 **4. Configure as Variáveis de Ambiente:**
@@ -101,11 +120,44 @@ Siga os passos abaixo para rodar o projeto em sua máquina.
 
 **5. Rode o Servidor de Desenvolvimento:**
    ```bash
-   pnpm dev
+   npm run dev
    ```
 
 **6. Abra no Navegador:**
    Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver a aplicação em funcionamento.
+
+## 🚢 Deploy (self-hosted, VPS Hetzner)
+
+Desde 2026-08-20 o projeto saiu do Vercel e roda self-hosted em
+`cslewis.narniano.com`, junto com o resto do cluster **A Biblioteca**
+(config em `infra-vps`/`hetzner-infra`, repo separado).
+
+- **`Dockerfile`** — multi-stage (`node:22-alpine`): `deps` → `builder`
+  (`npm run build`) → `runner`, copiando só `.next/standalone` +
+  `.next/static` + `public`. Exige `output: "standalone"` em
+  `next.config.js` (sem isso o build não gera a pasta `standalone` e o
+  `COPY` do estágio `runner` falha).
+- **`.dockerignore`** — exclui `node_modules`, `.next`, `.git`, `.env*`.
+- **Compose/Traefik** vivem no repo `hetzner-infra`, em `cslewis/docker-compose.yml`
+  (`build.context: /opt/cslewis`, roteamento por `Host(cslewis.narniano.com)`,
+  healthcheck em `http://127.0.0.1:3000/`).
+- **Fluxo de deploy manual:**
+  ```bash
+  # do desktop, sincroniza o código pro /opt/cslewis da VPS
+  rsync -az --delete --exclude='.git' --exclude='node_modules' \
+    --exclude='.next' --exclude='.env' --exclude='**/.env' \
+    ./ narniano@<host-vps>:/opt/cslewis/
+
+  # na VPS, dentro de ~/hetzner-infra
+  make deploy service=cslewis
+  ```
+  > [!IMPORTANTE] Achado real (2026-08-20): `Dockerfile`, `.dockerignore`
+  > e o `output: "standalone"` foram criados direto na VPS na migração
+  > e só entraram no Git horas depois. Um `rsync --delete` rodado a
+  > partir de um clone desatualizado apagou esses três arquivos do
+  > `/opt/cslewis` (o container antigo seguiu rodando — só o rebuild
+  > quebrou). Sempre dar `git pull` antes de sincronizar, dos dois lados
+  > (clone local **e** `~/hetzner-infra` na VPS).
 
 ## 📁 Estrutura do Projeto
 
@@ -113,29 +165,41 @@ A estrutura de pastas principal segue o padrão do App Router do Next.js:
 
 ```
 .
+├── Dockerfile             # Build multi-stage pro deploy self-hosted (VPS)
+├── .dockerignore
 ├── public/
-│   └── Lewis.jpg         # Imagem estática de C. S. Lewis
+│   ├── Lewis.jpg          # Imagem estática de C. S. Lewis
+│   └── favicon.ico
 ├── src/
 │   ├── app/
-│   │   ├── globals.css   # Estilos globais e variáveis do tema Shadcn/UI
-│   │   ├── layout.tsx    # Layout raiz com fontes configuradas
-│   │   └── page.tsx      # Página principal (HomePage)
+│   │   ├── citacao/[id]/page.tsx # Página por citação — URL/metadados dinâmicos
+│   │   ├── robots.ts      # robots.txt dinâmico
+│   │   ├── sitemap.ts     # sitemap.xml dinâmico
+│   │   ├── globals.css    # Estilos globais e variáveis do tema Shadcn/UI
+│   │   ├── layout.tsx     # Layout raiz, fontes e ThemeProvider (next-themes)
+│   │   └── page.tsx       # Página principal (HomePage)
 │   ├── components/
-│   │   ├── ui/           # Componentes Shadcn/UI (ex: button.tsx, card.tsx)
-│   │   └── QuoteGenerator.tsx # Componente principal da aplicação
+│   │   ├── ui/             # Componentes Shadcn/UI (ex: button.tsx, card.tsx)
+│   │   ├── QuoteGenerator.tsx # Componente principal da aplicação
+│   │   ├── ShareCard.tsx   # Card 1080×1080 renderizado fora de tela pro html2canvas
+│   │   ├── ClusterFooter.tsx # Rodapé cruzado com o resto do cluster A Biblioteca
+│   │   ├── ModeToggle.tsx  # Botão de modo escuro/claro
+│   │   ├── PageShell.tsx   # Wrapper de layout compartilhado
+│   │   └── theme-provider.tsx
 │   └── lib/
-│       ├── quotes.ts     # Array com as citações de C. S. Lewis
-│       └── utils.ts      # Utilitário do Shadcn/UI para `cn()`
-└── tailwind.config.ts    # Configuração do Tailwind CSS
+│       ├── quotes.ts      # Array com as 165 citações de C. S. Lewis
+│       └── utils.ts       # Utilitário do Shadcn/UI para `cn()`
+└── tailwind.config.ts     # Configuração do Tailwind CSS
 ```
 
 ## 💡 Lógica do Componente `QuoteGenerator`
 
--   **Estado:** O componente utiliza o hook `useState` para armazenar a citação (`currentQuote`) que está sendo exibida.
--   **Geração Aleatória:** A função `getRandomQuote` seleciona aleatoriamente uma citação do array `lewisQuotes` localizado em `src/lib/quotes.ts`.
--   **Inicialização:** O hook `useEffect` é usado para carregar uma citação inicial assim que o componente é montado.
--   **Interatividade:** O clique no botão "Gerar nova citação" chama a função `generateNewQuote`, que atualiza o estado com uma nova citação aleatória.
--   **Links Dinâmicos:** A fonte de cada citação é um link clicável que direciona o usuário para uma busca na Amazon pelo livro correspondente, já com o tag de afiliado.
+-   **Estado por índice, não por objeto:** `currentIndex` (não a citação em si) é o estado — a citação exibida é derivada dele (`lewisQuotes[currentIndex]`). Isso é o que permite a URL por citação funcionar.
+-   **URL por citação:** `generateNewQuote` sorteia um índice e chama `router.replace(\`/citacao/${randomIndex}\`)` — a URL sempre aponta pra citação em tela, sem precisar de um botão "copiar link" separado. `initialQuoteId` (prop vinda de `/citacao/[id]/page.tsx`) fixa o índice inicial quando se chega direto num link.
+-   **Tamanho de fonte ajustável:** botões "A-"/"A+" ciclam entre 5 passos de tamanho (`QUOTE_FONT_SIZES`); a preferência é salva em `localStorage` e restaurada num `useEffect` (não no estado inicial, pra não causar hydration mismatch entre servidor e cliente).
+-   **Baixar como imagem:** `handleDownloadImage` importa `html2canvas` sob demanda e renderiza o `ShareCard` (fora de tela) num PNG 1080×1080.
+-   **Links Dinâmicos:** a fonte de cada citação é um link pra busca na Amazon (`getAmazonSearchUrl`) — o termo inclui título do livro **+ "C. S. Lewis"**, já com o tag de afiliado.
+-   **Modo escuro:** classes `dark:` do Tailwind, alternadas via `next-themes` (`ModeToggle`/`theme-provider.tsx`).
 
 ## 🎨 Design e Estilização
 
