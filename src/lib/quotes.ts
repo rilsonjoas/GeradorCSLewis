@@ -370,4 +370,454 @@ export const lewisQuotes = [
       "Ao ler a grande literatura, eu me torno mil homens e, mesmo assim, continuo a ser eu mesmo.",
     source: "Um Experimento em Crítica Literária",
   },
+  {
+    quote:
+      "A dor, sem dúvida, remove camadas de degradação. Mas qual o sentido de arrancar camadas de ouro para que se encontre uma ferida?",
+    source: "A Anatomia de uma Dor",
+  },
+  {
+    quote:
+      "Onde está Deus?... Vá para Ele quando sua necessidade é desesperadora, quando o outro socorro é inútil, e o que encontra? Uma porta batendo na sua cara, e um barulho de trancos por dentro. Depois disso, silêncio.",
+    source: "A Anatomia de uma Dor",
+  },
+  {
+    quote:
+      "Quando acontece algo que nos destrói a vida tal como ela é, e nos força a parar de viver assim, é isso que eu chamo de dor.",
+    source: "A Anatomia de uma Dor",
+  },
+  {
+    quote:
+      "Toda realidade é iconoclasta. Aquela que amamos nesta terra triunfa incessantemente sobre a simples ideia que formulamos dela.",
+    source: "A Anatomia de uma Dor",
+  },
+  {
+    quote:
+      "Em todos os mundos há um caminho para o meu país.",
+    source: "A Viagem do Peregrino da Alvorada",
+  },
+  {
+    quote:
+      "É esta a terra pela qual tenho aspirado a vida inteira, embora até agora não a conhecesse. A razão por que amávamos a antiga Nárnia é que ela, às vezes, se parecia um pouquinho com isto aqui.",
+    source: "A Última Batalha",
+  },
+  {
+    quote:
+      "Para nós, este é o fim de todas as histórias, e podemos dizer, com absoluta certeza, que todos viveram felizes para sempre. Para eles, porém, este foi apenas o começo da verdadeira história: a que continua eternamente e na qual cada capítulo é muito melhor do que o anterior.",
+    source: "A Última Batalha",
+  },
+  {
+    quote:
+      "Oração no sentido de petição, de pedir coisas, é uma pequena parte disso; confissão e penitência são seu princípio; a adoração, seu santuário; a presença e a visão e o deleite de Deus, seu pão e vinho.",
+    source: "A Última Noite do Mundo",
+  },
+  {
+    quote:
+      "O plano não é apenas a abolição dos anjos, mas a abolição dos homens.",
+    source: "Aquela Fortaleza Medonha",
+  },
+  {
+    quote:
+      "O medo de ser 'fora' é mais forte que qualquer convicção moral.",
+    source: "Aquela Fortaleza Medonha",
+  },
+  {
+    quote:
+      "O céu não é silencioso — nós é que aprendemos a não ouvir.",
+    source: "Aquela Fortaleza Medonha",
+  },
+  {
+    quote:
+      "Sei agora, Senhor, por que não me deu nenhuma resposta. Você é a própria resposta. Diante do seu rosto, as perguntas morrem.",
+    source: "Até que Tenhamos Rostos",
+  },
+  {
+    quote:
+      "A coisa mais doce em toda a minha vida tem sido o anseio de chegar à montanha, de encontrar o lugar de onde veio toda a beleza — o meu país, o lugar onde eu deveria ter nascido.",
+    source: "Até que Tenhamos Rostos",
+  },
+  {
+    quote:
+      "Eu acho que se Deus nos perdoa, nós devemos perdoar a nós mesmos. Caso contrário, é quase como nos colocarmos como um tribunal superior a Ele.",
+    source: "Cartas de C. S. Lewis",
+  },
+  {
+    quote:
+      "O presente é o ponto em que o tempo toca a eternidade.",
+    source: "Cartas de um diabo ao seu aprendiz",
+  },
+  {
+    quote:
+      "A coragem não é simplesmente uma das virtudes, mas a forma que cada virtude assume quando está sendo testada, ou seja, no ponto da mais alta realidade.",
+    source: "Cartas de um diabo ao seu aprendiz",
+  },
+  {
+    quote:
+      "Quanto mais alguém tem medo, mais irá odiar.",
+    source: "Cartas de um diabo ao seu aprendiz",
+  },
+  {
+    quote:
+      "A fina flor do profano só pode crescer na vizinhança íntima do sagrado. Em nenhum lugar a nossa tentação é tão bem-sucedida quanto precisamente aos pés do altar.",
+    source: "Cartas de um diabo ao seu aprendiz",
+  },
+  {
+    quote:
+      "Pascal diz que Deus 'instituiu a oração para conferir às suas criaturas a dignidade da causalidade'.",
+    source: "Deus no Banco dos Réus",
+  },
+  {
+    quote:
+      "Aqueles que não refletem sobre os próprios pecados acabam pensando sem cessar sobre os pecados dos outros.",
+    source: "Deus no Banco dos Réus",
+  },
+  {
+    quote:
+      "Para Deus, cada acontecimento físico e cada ato humano estão presentes em um eterno agora. Nesse sentido, Deus não criou o universo há muito, porém o cria neste exato instante a cada instante.",
+    source: "Milagres",
+  },
+  {
+    quote:
+      "Até agora, nenhuma teoria filosófica que eu tenha encontrado conseguiu superar de forma radical as palavras do Gênesis: 'No princípio, Deus criou os céus e a terra'.",
+    source: "Milagres",
+  },
+  {
+    quote:
+      "Cristo é o princípio universal de concreção ou coesão por meio do qual o Universo se mantém.",
+    source: "Milagres",
+  },
+  {
+    quote:
+      "O anglicismo do inglês só é percebido por quem conhece também outra língua. Da mesma maneira e pela mesma razão, só os sobrenaturalistas contemplam de fato a natureza.",
+    source: "Milagres",
+  },
+  {
+    quote:
+      "Devemos, de fato, crer que o corpo ressurreto é totalmente diferente do corpo mortal; mas a existência, nesse novo estado, de algo que possa ser chamado, em qualquer sentido, de 'corpo', envolve algum tipo de relação espacial.",
+    source: "O Assunto do Céu",
+  },
+  {
+    quote:
+      "Desejo destacar aquilo que penso que nós, ou pelo menos eu, precisamos mais: a alegria e o prazer em Deus que encontramos no livro de Salmos.",
+    source: "O Assunto do Céu",
+  },
+  {
+    quote:
+      "Talvez estejamos cansados deste velho campo, mas Deus não está.",
+    source: "O Assunto do Céu",
+  },
+  {
+    quote:
+      "Eu era o leão que te empurrou para o precipício.",
+    source: "O Cavalo e seu Menino",
+  },
+  {
+    quote:
+      "O rei obedece às leis, pois as leis o fizeram rei.",
+    source: "O Cavalo e seu Menino",
+  },
+  {
+    quote:
+      "O peso da glória oferece, se olharmos corretamente, duas boas novas. A primeira é mais surpreendente e mais gratificante: a vontade de Deus é nos conceder prazer.",
+    source: "O Peso da Glória",
+  },
+  {
+    quote:
+      "A coisa mais perigosa que podemos fazer é apanhar uma fração da verdade e não perceber que ela é apenas uma fração.",
+    source: "O Peso da Glória",
+  },
+  {
+    quote:
+      "O cristianismo não é doutrina que devemos acreditar, mas uma vida que devemos viver.",
+    source: "O Peso da Glória",
+  },
+  {
+    quote:
+      "O sofrimento não é bom em si mesmo. A característica 'boa' de qualquer experiência dolorosa jaz, para o sofredor, em sua submissão à vontade de Deus e, para o espectador, na compaixão que ela desperta.",
+    source: "O Problema do Sofrimento",
+  },
+  {
+    quote:
+      "Renúncia cristã não significa 'apatia' estoica, mas uma prontidão em preferir Deus em comparação com objetivos inferiores, embora eles sejam, em si mesmos, legítimos.",
+    source: "O Problema do Sofrimento",
+  },
+  {
+    quote:
+      "Nós não somos meras criaturas imperfeitas que precisam ser aperfeiçoadas; somos, conforme disse Newman, rebeldes que precisam depor as armas.",
+    source: "O Problema do Sofrimento",
+  },
+  {
+    quote:
+      "Quando a dor precisa ser suportada, um pouco de coragem ajuda mais do que muito conhecimento, um pouco de compaixão humana mais do que muita coragem, e a menor centelha do amor de Deus mais do que tudo.",
+    source: "O Problema do Sofrimento",
+  },
+  {
+    quote:
+      "Nárnia, Nárnia, desperte! Ame! Pense! Fale! Que as árvores caminhem! Que os animais falem! Que as águas sejam divinas!",
+    source: "O Sobrinho do Mago",
+  },
+  {
+    quote:
+      "Apesar de o mundo não ter mais que cinco horas de idade, o mal já penetrou nele.",
+    source: "O Sobrinho do Mago",
+  },
+  {
+    quote:
+      "Você não ensina uma semente a morrer e a transformar-se em uma árvore jogando-a no fogo: a fim de ser enterrada, a semente deve tornar-se boa.",
+    source: "Oração: Cartas a Malcolm",
+  },
+  {
+    quote:
+      "Não deveríamos orar como se fôssemos perfeitos, mas devemos orar como somos agora.",
+    source: "Oração: Cartas a Malcolm",
+  },
+  {
+    quote:
+      "O estado de espírito ordenado é uma das bênçãos pelas quais devemos orar, não uma fantasia que devemos vestir quando oramos.",
+    source: "Oração: Cartas a Malcolm",
+  },
+  {
+    quote:
+      "Sempre há esperança se mantivermos um problema não resolvido em mente; não há nenhuma se fingirmos que ele não existe.",
+    source: "Oração: Cartas a Malcolm",
+  },
+  {
+    quote:
+      "Nossas ansiedades são aflições, não pecados. Como todas as aflições, elas são, se assim podemos considerá-las, nossa participação na Paixão de Cristo.",
+    source: "Oração: Cartas a Malcolm",
+  },
+  {
+    quote:
+      "O que estava diante dele agora era simples maldade: maldade nua, ativa, sem disfarces. Era como o cheiro da corrupção que emana de um cadáver.",
+    source: "Perelandra",
+  },
+  {
+    quote:
+      "A criatura não estava tentada a pecar — estava tentada a pensar que pecar não existia.",
+    source: "Perelandra",
+  },
+  {
+    quote:
+      "Escrevo para os leigos sobre coisas nas quais eu mesmo sou leigo.",
+    source: "Reflexões sobre os Salmos",
+  },
+  {
+    quote:
+      "É preciso dizer que os salmos são poemas, e poemas criados para serem cantados: não são tratados doutrinários, nem mesmo sermões.",
+    source: "Reflexões sobre os Salmos",
+  },
+  {
+    quote:
+      "Aparentemente, é impossível para a inteligência do homem conceber a narrativa na qual a inteligência de outro homem não pode, de forma plausível, encontrar um sentido oculto.",
+    source: "Reflexões sobre os Salmos",
+  },
+  {
+    quote:
+      "Quando realizamos nossos 'deveres religiosos', somos semelhantes a pessoas cavando canais em terra árida a fim de que, quando a água finalmente vier, ela os encontre prontos. Há momentos felizes, já agora, em que gotas escorrem pelo leito seco.",
+    source: "Reflexões sobre os Salmos",
+  },
+  {
+    quote:
+      "Acho que nos deleitamos em louvar o que apreciamos porque o louvor não só expressa, mas completa o gozo.",
+    source: "Reflexões sobre os Salmos",
+  },
+  {
+    quote:
+      "No momento em que 'céu' deixa de significar união com Deus e 'inferno' deixa de significar separação Dele, a crença em qualquer um deles se torna uma superstição maldosa.",
+    source: "Reflexões sobre os Salmos",
+  },
+  {
+    quote:
+      "O valor do mito é que ele leva todas as coisas que conhecemos e restaura nelas o rico significado perdido pelo 'véu da familiaridade'.",
+    source: "Sobre Histórias",
+  },
+  {
+    quote:
+      "A criança não despreza florestas reais porque leu sobre florestas encantadas: a leitura faz todas as florestas reais um pouco encantadas.",
+    source: "Sobre Histórias",
+  },
+  {
+    quote:
+      "Tudo começou com imagens: um fauno carregando um guarda-chuva, uma rainha em um trenó, um magnífico leão. No começo, nem havia nada de cristão sobre eles; esse elemento apareceu por vontade própria.",
+    source: "Sobre Histórias",
+  },
+  {
+    quote:
+      "Todo bom escritor sabe que, quanto mais incomuns são as cenas e os acontecimentos de sua história, mais leves, mais comuns, mais típicos seus personagens devem ser.",
+    source: "Sobre Histórias",
+  },
+  {
+    quote:
+      "Que categoria de pessoas você acha que estaria mais preocupada com a ideia de fuga e que seria mais hostil a ela? Os carcereiros.",
+    source: "Sobre Histórias",
+  },
+  {
+    quote:
+      "Este é certamente o maior alcance da invenção: quando um autor produz o que parece não ser dele próprio, muito menos de alguma outra pessoa.",
+    source: "Sobre Histórias",
+  },
+  {
+    quote:
+      "Se insistirmos em pedir a moral da história, esta é sua moral: uma chamada de volta do otimismo fácil e também do pessimismo lamentoso, para aquela dura, ainda que não muito desesperada, compreensão da imutável situação difícil do Homem.",
+    source: "Sobre Histórias",
+  },
+  {
+    quote:
+      "O significado de um livro é a série ou o sistema de emoções, reflexões e atitudes produzidas por sua leitura.",
+    source: "Sobre Histórias",
+  },
+  {
+    quote:
+      "Estou quase inclinado a estabelecer como parte do cânone que uma história infantil que é apreciada apenas por crianças é uma história infantil ruim.",
+    source: "Sobre Histórias",
+  },
+  {
+    quote:
+      "Fui arrastado para dentro, chutando e esperneando, de olhos fixos em todos os lados em busca de uma chance de fuga. E o que me deixava zangado era que Deus me cercava por todos os lados.",
+    source: "Surpreendido pela Alegria",
+  },
+  {
+    quote:
+      "Você deve imaginar-me sozinho na sala daquele colégio em Magdalen, noite após noite, sentindo, sempre que minha mente se desviava nem que por um segundo do meu trabalho, a aproximação constante d'Aquele que eu tão ardentemente desejava não encontrar. Na Trinity Term de 1929 admiti que Deus era Deus, e me ajoelhei e orei: talvez, naquela noite, o mais relutante e desanimado convertido em toda a Inglaterra.",
+    source: "Surpreendido pela Alegria",
+  },
+  {
+    quote:
+      "Acho que todos aqueles que jamais experimentaram essa Alegria de verdade sabem que ela tem uma qualidade que difere de todas as outras coisas prazerosas que podem ser experimentadas neste mundo.",
+    source: "Surpreendido pela Alegria",
+  },
+  {
+    quote:
+      "Pois comer e ler são dois prazeres que se combinam admiravelmente.",
+    source: "Surpreendido pela Alegria",
+  },
+  {
+    quote:
+      "O mau leitor é o que lê para não ser transformado; o bom leitor é o que lê para ser transformado.",
+    source: "Um Experimento em Crítica Literária",
+  },
+  {
+    quote:
+      "A literatura existe para experiência — a análise existe para compreender a experiência.",
+    source: "Um Experimento em Crítica Literária",
+  },
+  {
+    quote:
+      "Tenho certeza de que Deus não deixa ninguém esperando, a menos que julgue que essa espera seja benéfica.",
+    source: "Cristianismo Puro e Simples",
+  },
+  {
+    quote:
+      "Dizer que Jesus foi apenas um grande mestre é uma opção que não temos. Um homem comum que dissesse o que Ele disse não seria um bom exemplo moral — seria um lunático, como alguém que pensa ser um ovo cozido, ou algo pior, como o próprio Diabo. Ou Ele era — e é — o Filho de Deus, ou era um louco. Mas não existe meio-termo seguro.",
+    source: "Cristianismo Puro e Simples",
+  },
+  {
+    quote:
+      "Se o Certo não for uma entidade real, que os nazistas, lá no fundo, conhecem tão bem quanto nós e têm o dever de praticar, qual o sentido de dizer que o inimigo está errado?",
+    source: "Cristianismo Puro e Simples",
+  },
+  {
+    quote:
+      "O cristianismo é praticamente a única entre as grandes religiões que aprova por completo o corpo — que acredita que a matéria é uma coisa boa, que o próprio Deus formou a forma humana e que um novo tipo de corpo nos será dado no Paraíso.",
+    source: "Cristianismo Puro e Simples",
+  },
+  {
+    quote:
+      "Os cristãos estão com a razão: o orgulho é a causa principal da infelicidade em todas as nações e em todas as famílias desde que o mundo foi criado.",
+    source: "Cristianismo Puro e Simples",
+  },
+  {
+    quote:
+      "Este mundo é uma grande loja de esculturas, nós somos as estátuas e há rumores por aí de que alguns de nós, algum dia, despertaremos para vida.",
+    source: "Cristianismo Puro e Simples",
+  },
+  {
+    quote:
+      "Quando Cristo morreu, ele morreu por você individualmente, como se você fosse o único ser humano do mundo.",
+    source: "Cristianismo Puro e Simples",
+  },
+  {
+    quote:
+      "Todo cristão deve se tornar um pequeno Cristo. Esse é todo o propósito de se tornar um cristão.",
+    source: "Cristianismo Puro e Simples",
+  },
+  {
+    quote:
+      "O cristianismo não concebe os indivíduos humanos como meros membros de um grupo, ou itens numa lista, mas como órgãos num corpo — uns diferentes dos outros, e cada qual oferecendo uma contribuição própria e insubstituível.",
+    source: "Cristianismo Puro e Simples",
+  },
+  {
+    quote:
+      "Muitas vezes, a única forma de desenvolver realmente uma qualidade é começar a se comportar como se você já a tivesse.",
+    source: "Cristianismo Puro e Simples",
+  },
+  {
+    quote:
+      "Dê-me tudo. Não quero uma parcela do seu tempo, uma parcela do seu dinheiro e uma parcela do seu trabalho: eu quero você. Não vim para atormentar seu ego natural, mas para matá-lo. Nada de meios-termos. Não quero podar um ramo aqui e outro ali, quero derrubar a árvore toda.",
+    source: "Cristianismo Puro e Simples",
+  },
+  {
+    quote:
+      "É fácil agradar a Deus, mas satisfazê-lo é bem difícil.",
+    source: "Cristianismo Puro e Simples",
+  },
+  {
+    quote:
+      "É só quando me volto para Cristo, só quando abro mão de mim mesmo para entregar-me à sua Pessoa que começo a ter uma personalidade realmente minha.",
+    source: "Cristianismo Puro e Simples",
+  },
+  {
+    quote:
+      "Deus tem uma atenção infinita para dedicar a cada um de nós. Você está tão a sós com Ele como se fosse o único ser que Ele já criou.",
+    source: "Cristianismo Puro e Simples",
+  },
+  {
+    quote:
+      "Temos aqui um paradoxo. Embora seja amor-necessidade, aquilo de que tem necessidade é dar. É um amor-dádiva, mas aquilo de que necessita é ser necessário.",
+    source: "Os Quatro Amores",
+  },
+  {
+    quote:
+      "Para os antigos, a Amizade parecia o mais feliz e humano de todos os amores. A coroa da vida e a escola da virtude.",
+    source: "Os Quatro Amores",
+  },
+  {
+    quote:
+      "A própria condição de ter amigos é que deveríamos desejar algo além de Amigos.",
+    source: "Os Quatro Amores",
+  },
+  {
+    quote:
+      "Quando contemplarmos a face de Deus saberemos que sempre a conhecemos. Ele participou, fez, sustentou e moveu, momento a momento, todas as nossas experiências terrenas de amor inocente. Tudo o que era amor nelas, mesmo na terra, era muito mais dEle do que nosso.",
+    source: "Os Quatro Amores",
+  },
+  {
+    quote:
+      "Descobrimos assim pela experiência que não adianta pedir ao céu conforto terreno. O céu só pode dar consolo celestial e nenhum outro.",
+    source: "Os Quatro Amores",
+  },
+  {
+    quote:
+      "Suspeito que no céu um amor que jamais incorporou o próprio Amor seria igualmente irrelevante. Pois a Natureza passou. Tudo o que não é eterno acha-se eternamente fora de moda.",
+    source: "Os Quatro Amores",
+  },
+  {
+    quote:
+      "A verdadeira obra deve ser dentre todas a mais secreta. E, se isso for possível, secreta até para nós mesmos. Nossa mão direita não precisa saber o que a esquerda está fazendo.",
+    source: "Os Quatro Amores",
+  },
+  {
+    quote:
+      "É fácil reconhecer, mas praticamente impossível compreender por muito tempo, que não passamos de espelhos cujo brilho, caso sejamos brilhantes, é totalmente derivado do sol que resplandece sobre nós.",
+    source: "Os Quatro Amores",
+  },
+  {
+    quote:
+      "Deus, que de nada precisa, faz existir pelo amor criaturas inteiramente supérfluas a fim de que possa amá-las e aperfeiçoá-las.",
+    source: "Os Quatro Amores",
+  },
+  {
+    quote:
+      "Chegamos a uma fase em que nada é mais urgente do que uma boa gargalhada.",
+    source: "Os Quatro Amores",
+  },
 ];

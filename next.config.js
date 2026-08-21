@@ -1,11 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Suas opções de configuração do Next.js aqui
-  // Exemplo:
-  // reactStrictMode: true,
-  // images: {
-  //   domains: ['example.com'],
-  // },
+  // Necessário pro build Docker (self-hosted na VPS) — gera .next/standalone
+  // com só o runtime necessário, sem precisar copiar node_modules inteiro.
+  output: "standalone",
 };
 
 module.exports = nextConfig;
