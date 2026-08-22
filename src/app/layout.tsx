@@ -17,18 +17,25 @@ const lora = Lora({
   variable: "--font-lora", // Para usar com Tailwind
 });
 
-// Fonte de destaque do Design Narniano (--font-display) — usada só no
-// .signature-italic do nome da obra, não substitui Lato/Lora no resto.
+// Fonte de destaque do Design Narniano (--font-display) — "A Voz da
+// Tradição" no guia: títulos e o .signature-italic do nome da obra.
+// Não substitui Lato/Lora no corpo.
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  style: ["italic"],
-  weight: ["500"],
+  style: ["normal", "italic"],
+  weight: ["500", "600", "700"],
   variable: "--font-display",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://cslewis.narniano.com"),
-  title: "Gerador de Citações C. S. Lewis",
+  // Título descritivo e estático — a citação em tela NUNCA vira <title>
+  // (nem via navegação client-side pra /citacao/[id]); ela mora na
+  // description/OG. Template dá marca consistente nas rotas filhas.
+  title: {
+    default: "Gerador de Citações de C. S. Lewis",
+    template: "%s | Citações de C. S. Lewis",
+  },
   description:
     "Gere citações inspiradoras de C. S. Lewis sobre fé, razão e vida cristã — com sugestão de livros do autor pra ler mais.",
   icons: {

@@ -70,6 +70,10 @@
 :root {
   --dourado: #b49a60;
   --canela: #7a4e2d;
+  --laranja-queimado: #c26430;
+  --vinho: #4b2e39;
+  --bege-areia: #eae0d5;
+  --creme: #f5f1e8;
   --espaco-profundo: #0b0e23;
   --nebulosa: #4c3b6e;
   --luz-estelar: #f4efe1;
@@ -81,6 +85,50 @@
     var(--nebulosa) 65%,
     var(--espaco-profundo) 100%
   );
+}
+
+/* Fundo da página no Design Narniano.
+   Claro: "Pergaminho Iluminado" (guia técnico) — luz caindo de cima,
+   papel antigo escurecendo até o dourado na base.
+   Escuro: a Biblioteca à noite — couro quente com brasa dourada no topo
+   (lareira/luminária), afundando no quase-preto. */
+.bg-narniano {
+  background:
+    radial-gradient(
+      ellipse 90% 55% at 50% -5%,
+      rgba(255, 255, 255, 0.9),
+      transparent 60%
+    ),
+    linear-gradient(180deg, var(--creme) 0%, var(--bege-areia) 52%, #b49a60 100%);
+}
+
+.dark .bg-narniano {
+  background:
+    radial-gradient(
+      ellipse 80% 50% at 50% -8%,
+      rgba(180, 154, 96, 0.16),
+      transparent 62%
+    ),
+    linear-gradient(180deg, #241611 0%, #150d08 55%, #0a0603 100%);
+}
+
+/* Ornamento separador — filigrana mínima do guia (divider-line + ✦) */
+.divider-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--dourado);
+}
+
+.divider-line {
+  width: 56px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--dourado));
+}
+
+.divider-line-right {
+  background: linear-gradient(270deg, transparent, var(--dourado));
 }
 
 /* Itálico como gesto assinatura — usado no nome da obra de cada citação */

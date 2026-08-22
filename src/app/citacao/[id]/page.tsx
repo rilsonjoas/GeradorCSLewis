@@ -19,19 +19,31 @@ function getQuote(id: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const quote = getQuote(params.id);
   if (!quote) {
-    return { title: "Citação não encontrada | Gerador C. S. Lewis" };
+    return { title: "Citação não encontrada" };
   }
 
-  const title = `"${quote.quote}" — C. S. Lewis`;
+  // <title> descritivo e estável (obra + marca) — a citação em si não
+  // vira título da aba; ela aparece na description, que é o lugar dela.
+  const title = quote.source ?? "Citação de C. S. Lewis";
+
   const description = quote.source
-    ? `Uma citação de C. S. Lewis em ${quote.source}.`
-    : "Uma citação de C. S. Lewis.";
+    ? `“${quote.quote}” — C. S. Lewis, em ${quote.source}.`
+    : `“${quote.quote}” — C. S. Lewis.`;
+
+  const og = {
+    // No card de compartilhamento a citação sim brilha — é o conteúdo.
+    title: "Citação de C. S. Lewis",
+    description,
+    type: "website" as const,
+    locale: "pt_BR",
+    images: ["/Lewis.png"],
+  };
 
   return {
     title,
     description,
-    openGraph: { title, description, type: "website", locale: "pt_BR" },
-    twitter: { card: "summary", title, description },
+    openGraph: og,
+    twitter: { card: "summary", title: og.title, description },
   };
 }
 

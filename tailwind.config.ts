@@ -21,6 +21,7 @@ const config: Config = {
       fontFamily: {
         lato: ["var(--font-lato)", "sans-serif"],
         lora: ["var(--font-lora)", "serif"],
+        display: ["var(--font-display)", "Georgia", "serif"],
       },
       colors: {
         "cs-brown-dark": "#3e2723",
