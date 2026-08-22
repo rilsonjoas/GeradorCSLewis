@@ -16,6 +16,33 @@ Segue o padrão comum documentado em `hetzner-infra/PADRAO-DE-ENGENHARIA.md`.
 
 ---
 
+## Qualidade de Conteúdo (2026-08-22)
+
+Padrão cross-projeto: `Padrão de Qualidade de Conteúdo.md` no vault
+(princípio #7 de `Filosofia e Padrões de Engenharia.md`). Risco
+específico deste projeto: **C.S. Lewis é um dos autores mais
+mal-citados da internet** — frases nunca escritas por ele circulam com
+atribuição confiante há décadas (o caso mais famoso é a "citação da
+hospitalidade", nunca encontrada em nenhuma obra dele). Hoje cada
+citação tem `source` (título do livro) em `src/lib/quotes.ts`, mas
+não existe processo documentado de verificação — `source` sozinho não
+prova que a frase está de fato naquele livro, só registra de onde ela
+*deveria* vir.
+
+- [ ] **Auditoria de verificação das 165 citações** — confirmar cada
+      uma contra uma edição real (Cristianismo Puro e Simples, Os
+      Quatro Amores, etc.), não contra site agregador de frases. Pode
+      ser incremental (lote por lote), mas fica registrado aqui como
+      dívida de conteúdo até estar 100% verificado.
+- [ ] Quando adicionar citação nova: só entra com o trecho confirmado
+      textualmente na obra — mesma régua do rodapé de citação usado em
+      [[Bíblia na Arte]] (autor, obra, ano).
+- [ ] Considerar guardar capítulo/localização além do título do livro,
+      pra facilitar reverificação futura sem precisar reler a obra
+      inteira de novo.
+
+---
+
 ## Backlog de Produto — Issues e Bugs (levantamento 2026-08-21)
 
 > Levantamento feito pelo Rilson ao usar o produto de verdade.
@@ -40,3 +67,31 @@ Segue o padrão comum documentado em `hetzner-infra/PADRAO-DE-ENGENHARIA.md`.
 
 - Infraestrutura/VPS → `hetzner-infra/PADRAO-DE-ENGENHARIA.md`
 - Readiness para produção → `hetzner-infra/PADRAO-DE-ENGENHARIA.md` (SHIELD)
+
+---
+
+## Marketing e Distribuição (2026-08-22)
+
+> Teto baixo por natureza (página única), mas custo de divulgação quase zero porque os canais já existem.
+
+### Canal natural: @narnianoexistencialista
+
+- O perfil (manual completo no Obsidian, `12 - Redes sociais`) É o funil deste gerador: citações de Lewis + reflexão são o conteúdo do feed, e o gerador é a ferramenta do público
+- Stories/reels usando o próprio render das citações apontando pro site
+
+### Loop embutido no produto
+
+- "Baixar como imagem" (html2canvas) já funciona — cada imagem compartilhada é anúncio do gerador
+- [ ] Conferir se toda imagem exportada carrega a marca discreta (`narniano.com`) — validar o fluxo de download, hoje só o ShareCard garante isso
+
+### Afiliado Amazon (tag `rilson-20`, já no ar)
+
+- Vincular o livro citado (Mero Cristianismo, O Problema do Sofrimento...) sob cada citação — monetização coerente com o conteúdo, não intrusiva
+
+### Pinterest (segunda frente)
+
+- Cards de citação são formato nativo do Pinterest e o pin vive anos — tráfego composto pro teto baixo
+
+### Cluster A Biblioteca
+
+- Rodapé cruzado já no ar nos projetos irmãos; manter o bloco "Conheça também" como padrão nos próximos sites
