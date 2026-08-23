@@ -1,0 +1,56 @@
+name: Deploy VPS
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: deploy-vps
+      cancel-in-progress: false
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Deploy no VPS (git pull + rebuild)
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            # Guarda de disco (INCIDENTES.md no infra, 2026-08-23): aborta
+            # antes de piorar se a raiz estiver >=90%.
+            USO=$(df --output=pcent / | tail -1 | tr -dc '0-9')
+            if [ "$USO" -ge 90 ]; then
+              echo "❌ Abortado: disco em ${USO}% (limite 90%). Rode: docker builder prune -af"
+              exit 1
+            fi
+            cd /opt/cslewis
+            git pull --ff-only origin main
+            cd ~/hetzner-infra
+            make deploy service=cslewis
+            # Prune total pós-deploy (INCIDENTES.md 2026-08-23): sem filtro de
+            # tempo — filtros semanais não pegam rajadas; e o prune simples (-f)
+            # deixa registros compartilhados no disco (17,9GB invisíveis).
+            docker builder prune -af >/dev/null
+            docker image prune -f >/dev/null
+            USO=$(df --output=pcent / | tail -1 | tr -dc '0-9')
+            echo "✅ Deploy ok — disco em ${USO}%"
+
+      - name: Smoke test
+        run: |
+          # Achado 2026-08-16: "sleep 3" fixo dava falso-negativo (container
+          # às vezes ainda reiniciando) mesmo com o deploy tendo funcionado.
+          # Retry de verdade: até 10 tentativas, 3s entre elas.
+          for i in $(seq 1 10); do
+            curl -sf -o /dev/null https://cslewis.narniano.com/ && break
+            [ "$i" -eq 10 ] && exit 1
+            sleep 3
+          done
