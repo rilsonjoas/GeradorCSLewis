@@ -1,8 +1,14 @@
-const clusterLinks = [
-  { label: "Narniano", href: "https://narniano.com" },
-  { label: "Bíblia na Arte", href: "https://biblianaarte.narniano.com" },
-  { label: "Scriptorium Divinum", href: "https://scriptorium.narniano.com" },
-  { label: "Lecionário", href: "https://lecionario.narniano.com" },
+import * as React from "react";
+
+const clusterLinkPairs = [
+  [
+    { label: "Narniano", href: "https://narniano.com" },
+    { label: "Bíblia na Arte", href: "https://biblianaarte.narniano.com" },
+  ],
+  [
+    { label: "Scriptorium Divinum", href: "https://scriptorium.narniano.com" },
+    { label: "Lecionário", href: "https://lecionario.narniano.com" },
+  ],
 ];
 
 export function ClusterFooter() {
@@ -14,29 +20,44 @@ export function ClusterFooter() {
         Conheça também
       </span>
 
-      {/* flex-wrap com itens atômicos: cada par ornamento+link é indivisível,
-          então a quebra de linha nunca deixa um ✦ órfão no fim/começo da
-          linha (era isso que dava o espaçamento estranho) */}
+      {/* Exibe em 2 linhas de 2 links no mobile (2x2) e 1 linha completa (4x1) em breakpoints maiores */}
       <nav
         aria-label="Outros projetos do cluster A Biblioteca"
-        className="flex max-w-md flex-wrap items-baseline justify-center gap-y-1.5 text-xs text-cs-brown-medium dark:text-cs-beige/90 sm:max-w-none"
+        className="flex flex-col items-center justify-center gap-y-1.5 text-xs text-cs-brown-medium dark:text-cs-beige/90 sm:flex-row sm:gap-y-0"
       >
-        {clusterLinks.map((link, i) => (
-          <span key={link.href} className="flex items-baseline whitespace-nowrap">
-            {i > 0 && (
-              <span aria-hidden="true" className="mx-2.5 text-[var(--dourado)]">
+        {clusterLinkPairs.map((pair, pairIndex) => (
+          <React.Fragment key={pairIndex}>
+            {pairIndex > 0 && (
+              <span
+                aria-hidden="true"
+                className="hidden mx-2.5 text-[var(--dourado)] sm:inline"
+              >
                 ✦
               </span>
             )}
-            <a
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors underline-offset-2 hover:text-[var(--canela)] hover:underline dark:hover:text-[var(--dourado)]"
-            >
-              {link.label}
-            </a>
-          </span>
+            <div className="flex items-baseline justify-center whitespace-nowrap">
+              {pair.map((link, linkIndex) => (
+                <React.Fragment key={link.href}>
+                  {linkIndex > 0 && (
+                    <span
+                      aria-hidden="true"
+                      className="mx-2.5 text-[var(--dourado)]"
+                    >
+                      ✦
+                    </span>
+                  )}
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors underline-offset-2 hover:text-[var(--canela)] hover:underline dark:hover:text-[var(--dourado)]"
+                  >
+                    {link.label}
+                  </a>
+                </React.Fragment>
+              ))}
+            </div>
+          </React.Fragment>
         ))}
       </nav>
 
@@ -46,3 +67,4 @@ export function ClusterFooter() {
     </footer>
   );
 }
+
