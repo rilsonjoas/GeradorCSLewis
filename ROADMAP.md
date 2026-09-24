@@ -86,7 +86,7 @@ prova que a frase está de fato naquele livro, só registra de onde ela
 
 ### Afiliado Amazon (tag `rilson-20`, já no ar)
 
-- Vincular o livro citado (Mero Cristianismo, O Problema do Sofrimento...) sob cada citação — monetização coerente com o conteúdo, não intrusiva
+- [x] Vincular o livro citado (Mero Cristianismo, O Problema do Sofrimento...) sob cada citação — monetização coerente com o conteúdo, não intrusiva. **Concluído** — `affiliateUrl` vem da API do Scriptorium (`/api/v1/quotes`, com `tag=rilson-20` por obra) e `QuoteGenerator.tsx` renderiza o CTA quando o link existe (verificado 2026-09-24). Citações sem link (ex.: Spurgeon, domínio público) não exibem o CTA.
 
 ### Pinterest (segunda frente)
 
