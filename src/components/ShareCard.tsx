@@ -1,8 +1,8 @@
 import React from "react";
-import { Quote } from "@/lib/quotes";
+import type { LewisQuote } from "@/lib/quote-api";
 
 interface ShareCardProps {
-  quote: Quote;
+  quote: LewisQuote;
 }
 
 /* Escala tipográfica por comprimento — o acervo vai de 25 a 408 chars.

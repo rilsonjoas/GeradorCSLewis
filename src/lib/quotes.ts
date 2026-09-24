@@ -1,3 +1,10 @@
+// ARQUIVO HISTÓRICO (ADR 001): estas 165 citações saíram daqui para a
+// tabela `quotes` na API do Scriptorium (scripts/merge-quotes.ts no repo
+// do server) — todas as 165 já eram subconjunto exato do acervo do
+// Lecionário (217), e os 5 temas "ceus" foram preservados. O app NÃO
+// consome mais este arquivo (ver src/lib/quote-api.ts); ele fica como
+// registro do ponto de partida do seed.
+
 export interface Quote {
   quote: string;
   source: string;

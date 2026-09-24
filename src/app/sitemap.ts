@@ -1,11 +1,17 @@
 import type { MetadataRoute } from "next";
-import { lewisQuotes } from "@/lib/quotes";
+import { fetchLewisQuotes } from "@/lib/quote-api";
 
 const baseUrl = "https://cslewis.narniano.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const quoteUrls: MetadataRoute.Sitemap = lewisQuotes.map((_, index) => ({
-    url: `${baseUrl}/citacao/${index}`,
+// Ids estáveis (uuid da tabela quotes no Scriptorium — ADR 001). Se a API
+// estiver fora no momento da geração, devolve só a home (some com graça).
+export const dynamic = "force-dynamic";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const quotes = await fetchLewisQuotes().catch(() => []);
+
+  const quoteUrls: MetadataRoute.Sitemap = quotes.map((quote) => ({
+    url: `${baseUrl}/citacao/${quote.id}`,
     changeFrequency: "yearly",
     priority: 0.5,
   }));

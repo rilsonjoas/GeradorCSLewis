@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { lewisQuotes, Quote } from "@/lib/quotes"; // Importar citações e tipo
+import { fetchRandomLewisQuote, type LewisQuote } from "@/lib/quote-api";
 import { Button } from "@/components/ui/button"; // Importar Button do ShadCN
 import {
   Card,
@@ -13,8 +13,6 @@ import {
 } from "@/components/ui/card"; // Importar Card do ShadCN
 import { ShareCard } from "@/components/ShareCard";
 import { cn } from "@/lib/utils";
-
-const affiliateTag = "rilson-20"; // Seu tag de afiliado
 
 // Passos de tamanho de fonte da citação — índice 2 é o padrão (visual original).
 const QUOTE_FONT_SIZES = [
@@ -28,38 +26,36 @@ const DEFAULT_FONT_SIZE_INDEX = 2;
 const FONT_SIZE_STORAGE_KEY = "cslewis-quote-font-size";
 
 interface QuoteGeneratorProps {
-  // Índice inicial fixo — usado por /citacao/[id], onde o link já
-  // aponta pra uma citação específica. Sem isso, sorteia ao montar.
-  initialQuoteId?: number;
+  // Citação inicial fixa — usado por /citacao/[id], onde o link já
+  // aponta pra uma citação específica (id estável da API). Sem isso,
+  // sorteia uma ao montar.
+  initialQuote?: LewisQuote | null;
 }
 
-export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) {
+export default function QuoteGenerator({ initialQuote }: QuoteGeneratorProps) {
   const router = useRouter();
-  const [currentIndex, setCurrentIndex] = useState<number | null>(
-    initialQuoteId ?? null
+  const [currentQuote, setCurrentQuote] = useState<LewisQuote | null>(
+    initialQuote ?? null
   );
   const [isDownloading, setIsDownloading] = useState(false);
   const [fontSizeIndex, setFontSizeIndex] = useState(DEFAULT_FONT_SIZE_INDEX);
   const shareCardRef = useRef<HTMLDivElement>(null);
 
-  const currentQuote: Quote | null =
-    currentIndex !== null ? lewisQuotes[currentIndex] : null;
-
-  const generateNewQuote = () => {
-    if (!lewisQuotes || lewisQuotes.length === 0) return; // não deveria acontecer
-    const randomIndex = Math.floor(Math.random() * lewisQuotes.length);
-    setCurrentIndex(randomIndex);
+  const generateNewQuote = async () => {
+    const quote = await fetchRandomLewisQuote();
+    if (!quote) return; // API fora — mantém a citação atual na tela
+    setCurrentQuote(quote);
     // Mantém a URL sempre apontando pra citação em tela — é o que faz
     // "compartilhar o link" funcionar em qualquer momento, sem precisar
     // de um botão de "copiar link" separado (issue #3).
-    router.replace(`/citacao/${randomIndex}`, { scroll: false });
+    router.replace(`/citacao/${quote.id}`, { scroll: false });
   };
 
   useEffect(() => {
     // Se não veio de /citacao/[id] (ou seja, é a home "/"), sorteia uma
-    // citação inicial ao montar.
-    if (initialQuoteId === undefined) {
-      generateNewQuote();
+    // citação inicial ao montar (sorteio no server, /quotes/random).
+    if (initialQuote === undefined) {
+      void generateNewQuote();
     }
 
     // Restaura a preferência de tamanho de fonte salva (se houver) — em
@@ -78,15 +74,6 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Array de dependências vazio para rodar apenas uma vez na montagem
-
-  const getAmazonSearchUrl = (source: string): string => {
-    // Inclui "C. S. Lewis" na busca além do título — sem isso, títulos
-    // genéricos (ex.: "Milagres") ou com grafia levemente diferente da
-    // edição em catálogo podiam cair em resultados de outros livros/autores.
-    return `https://www.amazon.com.br/s?k=${encodeURIComponent(
-      `${source} C. S. Lewis`
-    )}&tag=${affiliateTag}`;
-  };
 
   const changeFontSize = (delta: number) => {
     setFontSizeIndex((prev) => {
@@ -177,14 +164,20 @@ export default function QuoteGenerator({ initialQuoteId }: QuoteGeneratorProps) 
         {currentQuote && currentQuote.source && (
           <CardDescription className="font-lora text-base mb-8 min-h-[1.2em] text-cs-brown-light dark:text-[var(--dourado)]">
             —{" "}
-            <a
-              href={getAmazonSearchUrl(currentQuote.source)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="signature-italic hover:underline dark:text-[var(--dourado)]" // 1.95:1 sem isso — falha WCAG AA
-            >
-              {currentQuote.source}
-            </a>
+            {currentQuote.affiliateUrl ? (
+              <a
+                href={currentQuote.affiliateUrl}
+                target="_blank"
+                rel="sponsored noopener noreferrer"
+                className="signature-italic hover:underline dark:text-[var(--dourado)]" // 1.95:1 sem isso — falha WCAG AA
+              >
+                {currentQuote.source}
+              </a>
+            ) : (
+              <span className="signature-italic dark:text-[var(--dourado)]">
+                {currentQuote.source}
+              </span>
+            )}
           </CardDescription>
         )}
         {!currentQuote && (

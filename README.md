@@ -4,6 +4,10 @@ Este é um projeto web interativo que gera citações inspiradoras e profundas d
 
 **🔗 Acesse a aplicação:** https://cslewis.narniano.com/
 
+<p align="center">
+  <img src="docs/screenshots/preview.png" alt="Gerador C. S. Lewis Preview" width="800" />
+</p>
+
 ## ✨ Visão Geral do Projeto
 
 O objetivo deste projeto é oferecer aos usuários uma forma simples e agradável de explorar a sabedoria de C. S. Lewis. A cada clique, uma nova citação é exibida, juntamente com a fonte (o livro ou obra de origem). Além disso, a aplicação inclui links para compra na Amazon, permitindo que os usuários interessados possam encontrar facilmente os livros mencionados.

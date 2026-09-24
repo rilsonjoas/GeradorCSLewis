@@ -1,23 +1,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { lewisQuotes } from "@/lib/quotes";
+import { fetchLewisQuoteById } from "@/lib/quote-api";
 import QuoteGenerator from "@/components/QuoteGenerator";
 import { PageShell } from "@/components/PageShell";
+
+// Rota dinâmica de propósito: o id vem da fonte ÚNICA do cluster (ADR 001)
+// — a API do Scriptorium. Sem generateStaticParams: reordenamentos/novas
+// citações no acervo compactam numa URL estável (uuid da tabela quotes),
+// ao contrário dos índices antigos (que quebravam a cada reordenação).
+export const dynamic = "force-dynamic";
 
 interface Props {
   params: { id: string };
 }
 
-function getQuote(id: string) {
-  const index = Number(id);
-  if (!Number.isInteger(index) || index < 0 || index >= lewisQuotes.length) {
-    return null;
-  }
-  return lewisQuotes[index];
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const quote = getQuote(params.id);
+  const quote = await fetchLewisQuoteById(params.id).catch(() => null);
   if (!quote) {
     return { title: "Citação não encontrada" };
   }
@@ -47,23 +45,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// Cada citação é um índice fixo no array de src/lib/quotes.ts — estável
-// enquanto a ordem do array não mudar. Suficiente pro tamanho do projeto;
-// se um dia o array crescer/for reordenado com frequência, migrar pra
-// slug próprio por citação.
-export function generateStaticParams() {
-  return lewisQuotes.map((_, index) => ({ id: String(index) }));
-}
-
-export default function QuotePage({ params }: Props) {
-  const quote = getQuote(params.id);
+export default async function QuotePage({ params }: Props) {
+  const quote = await fetchLewisQuoteById(params.id).catch(() => null);
   if (!quote) {
     notFound();
+    return;
   }
 
   return (
     <PageShell>
-      <QuoteGenerator initialQuoteId={Number(params.id)} />
+      <QuoteGenerator initialQuote={quote} />
     </PageShell>
   );
 }
