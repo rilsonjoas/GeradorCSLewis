@@ -66,6 +66,14 @@ export default function RootLayout({
       className={`${lato.variable} ${lora.variable} ${cormorant.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        {/* Umami Analytics — cookieless, self-hosted */}
+        <script
+          defer
+          src="https://umami.narniano.com/script.js"
+          data-website-id="27695e05-fa5d-455a-9255-b37b1853a4a9"
+        />
+      </head>
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
