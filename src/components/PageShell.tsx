@@ -1,5 +1,6 @@
 import { ModeToggle } from "@/components/ModeToggle";
 import { ClusterFooter } from "@/components/ClusterFooter";
+import { AdUnit } from "@/components/AdUnit";
 
 export function PageShell({ children }: { children: React.ReactNode }) {
   return (
@@ -8,8 +9,8 @@ export function PageShell({ children }: { children: React.ReactNode }) {
         <ModeToggle />
       </header>
       {children}
+      <AdUnit className="w-full max-w-[650px] my-6 flex justify-center overflow-hidden" />
       <ClusterFooter />
     </main>
   );
 }
-

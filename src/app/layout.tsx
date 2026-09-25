@@ -67,6 +67,22 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        {/* Google AdSense */}
+        <meta name="google-adsense-account" content="ca-pub-5482566824255473" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5482566824255473"
+          crossOrigin="anonymous"
+        />
+        {/* Opt-out de anúncios automáticos invasivos no nível da página */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(window.adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-5482566824255473",
+              enable_page_level_ads: false,
+            });`,
+          }}
+        />
         {/* Umami Analytics — cookieless, self-hosted */}
         <script
           defer
