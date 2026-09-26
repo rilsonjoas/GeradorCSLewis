@@ -38,6 +38,11 @@ export default function QuoteGenerator({ initialQuote }: QuoteGeneratorProps) {
     initialQuote ?? null
   );
   const [isDownloading, setIsDownloading] = useState(false);
+  // CORREÇÃO 2026-09-25 (4.1.3): região de status para o download. O botão
+  // trocava o rótulo por "Gerando imagem...", o que só é anunciado se o
+  // foco estiver nele — e o fim da operação não era anunciado de jeito
+  // nenhum. role="status" announce o sucesso e a falha sem roubar foco.
+  const [status, setStatus] = useState("");
   const [fontSizeIndex, setFontSizeIndex] = useState(DEFAULT_FONT_SIZE_INDEX);
   const shareCardRef = useRef<HTMLDivElement>(null);
 
@@ -93,6 +98,7 @@ export default function QuoteGenerator({ initialQuote }: QuoteGeneratorProps) {
   const handleDownloadImage = async () => {
     if (!shareCardRef.current || !currentQuote) return;
     setIsDownloading(true);
+    setStatus("Gerando a imagem da citação.");
     try {
       const { default: html2canvas } = await import("html2canvas");
       const canvas = await html2canvas(shareCardRef.current, { scale: 1 });
@@ -100,8 +106,12 @@ export default function QuoteGenerator({ initialQuote }: QuoteGeneratorProps) {
       link.download = `citacao-cs-lewis-${Date.now()}.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
+      setStatus("Imagem gerada ebaixada.");
     } catch (error) {
       console.error("Falha ao gerar imagem da citação:", error);
+      // CORREÇÃO 2026-09-25 (4.1.3): o erro só ia para o console. Quem não
+      // vê console é exatamente quem precisa do aviso.
+      setStatus("Não foi possível gerar a imagem. Tente de novo.");
     } finally {
       setIsDownloading(false);
     }
@@ -111,12 +121,21 @@ export default function QuoteGenerator({ initialQuote }: QuoteGeneratorProps) {
     <Card className="w-full max-w-2xl gap-4 border-t-4 border-[var(--dourado)] py-4 text-center shadow-lg bg-white sm:gap-6 sm:py-6 dark:bg-cs-brown-dark">
       <CardHeader className="px-4 pb-0 sm:px-6">
         {/* whitespace-nowrap + tamanhos por breakpoint: "GERADOR DE
-            CITAÇÕES" e "C. S. Lewis" nunca quebram feios em telas estreitas */}
-        <p className="font-lato whitespace-nowrap text-[10px] font-bold uppercase tracking-[0.25em] text-cs-brown-light sm:text-[11px] sm:tracking-[0.35em] dark:text-cs-brown-lighter">
+            CITAÇÕES" e "C. S. Lewis" nunca quebram feios em telas estreitas.
+            CORREÇÃO 2026-09-25 (1.4.4 / 1.4.10): o nowrap é só a partir de
+            sm:. Em 320px com 200% de zoom de texto, "C. S. Lewis" a 80px
+            estoura os 288px úteis (main com p-4) e o nowrap transforma isso
+            em rolagem horizontal — que é exatamente o que 1.4.10 proíbe.
+            No mobile normal o h1 cabe em ~200px, então nada se perde.
+            1.4.3: o claro fica como está (#6d4c41 sobre branco = 7.61:1,
+            folgado). Só o escuro mudava: #83675e sobre o card #3e2723 dava
+            2.68:1 — e aqui a cor do card é #3e2723, não o gradiente da
+            página, que é onde este texto NÃO está. */}
+        <p className="font-lato text-[10px] font-bold uppercase tracking-[0.25em] text-cs-brown-light sm:whitespace-nowrap sm:text-[11px] sm:tracking-[0.35em] dark:text-[var(--dourado)]">
           Gerador de citações
         </p>
         {/* Título em serifa display — "A Voz da Tradição" do Design Narniano */}
-        <h1 className="font-display mt-1 whitespace-nowrap text-[40px] font-semibold leading-none text-cs-brown-dark dark:text-cs-beige sm:text-5xl md:text-6xl">
+        <h1 className="font-display mt-1 text-[40px] font-semibold leading-none text-cs-brown-dark sm:whitespace-nowrap dark:text-cs-beige sm:text-5xl md:text-6xl">
           C. S. Lewis
         </h1>
         <div aria-hidden="true" className="divider-ornament mt-2 sm:mt-3">
@@ -149,7 +168,12 @@ export default function QuoteGenerator({ initialQuote }: QuoteGeneratorProps) {
         </a>
 
         <div className="mb-3 flex items-center justify-center">
+          {/* CORREÇÃO 2026-09-25 (4.1.3, AA): "Gerar nova citação" trocava o
+              texto e a URL em silêncio — quem usa leitor de tela apertava o
+              botão e não recebia confirmação nenhuma. aria-live="polite"
+              anuncia a citação nova sem interromper. */}
           <blockquote
+            aria-live="polite"
             className={cn(
               "font-lora italic min-h-[100px] flex items-center justify-center text-cs-brown-dark dark:text-cs-beige",
               QUOTE_FONT_SIZES[fontSizeIndex]
@@ -169,7 +193,7 @@ export default function QuoteGenerator({ initialQuote }: QuoteGeneratorProps) {
                 href={currentQuote.affiliateUrl}
                 target="_blank"
                 rel="sponsored noopener noreferrer"
-                className="signature-italic hover:underline dark:text-[var(--dourado)]" // 1.95:1 sem isso — falha WCAG AA
+                className="signature-italic underline decoration-1 underline-offset-2 hover:decoration-2 dark:text-[var(--dourado)]" // 1.95:1 sem isso — falha WCAG AA. CORREÇÃO 2026-09-25 (1.4.1): sublinhado permanente, não só no hover — a cor sozinha não pode ser o único meio de dizer "isto é link", e sem hover o link é idêntico ao texto das linhas 177/184.
               >
                 {currentQuote.source}
               </a>
@@ -207,14 +231,21 @@ export default function QuoteGenerator({ initialQuote }: QuoteGeneratorProps) {
         </div>
 
         {/* Controle de tamanho da citação — abaixo dos botões, centralizado,
-            fora do fluxo de leitura citação → fonte */}
+            fora do fluxo de leitura citação → fonte.
+            CORREÇÃO 2026-09-25: w-7 h-7 (28×28) passava o mínimo AA (2.5.8 =
+            24×24) mas falhava o 44×44 — que é *recomendação* da NBR 17060
+            (item 5.1.2.13, derivada do AAA do WCAG 2.1), não requisito. Como
+            o P7 do hetzner já pede 44×44 para público que justifique, e aqui
+            o controle de fonte já existe, subir para 44 não custou nada.
+            2.5.3 (Label in Name, A): o nome acessível agora COMEÇA com o
+            texto visível ("A+…"), para quem navega por voz funcionar. */}
         <div className="mt-4 flex items-center justify-center gap-2">
           <button
             type="button"
             onClick={() => changeFontSize(-1)}
             disabled={fontSizeIndex === 0}
-            aria-label="Diminuir tamanho da fonte da citação"
-            className="w-7 h-7 flex items-center justify-center rounded-full border text-xs font-lato font-bold transition-colors disabled:opacity-30 disabled:cursor-not-allowed border-cs-brown-lighter text-cs-brown-medium hover:bg-cs-brown-lighter/30 dark:border-cs-beige/80 dark:text-cs-beige dark:hover:bg-cs-beige/20"
+            aria-label="A- diminui o tamanho da fonte da citação"
+            className="w-11 h-11 flex items-center justify-center rounded-full border text-sm font-lato font-bold transition-colors disabled:opacity-30 disabled:cursor-not-allowed border-cs-brown-lighter text-cs-brown-medium hover:bg-cs-brown-lighter/30 dark:border-cs-beige/80 dark:text-cs-beige dark:hover:bg-cs-beige/20"
           >
             A-
           </button>
@@ -222,13 +253,18 @@ export default function QuoteGenerator({ initialQuote }: QuoteGeneratorProps) {
             type="button"
             onClick={() => changeFontSize(1)}
             disabled={fontSizeIndex === QUOTE_FONT_SIZES.length - 1}
-            aria-label="Aumentar tamanho da fonte da citação"
-            className="w-7 h-7 flex items-center justify-center rounded-full border text-xs font-lato font-bold transition-colors disabled:opacity-30 disabled:cursor-not-allowed border-cs-brown-lighter text-cs-brown-medium hover:bg-cs-brown-lighter/30 dark:border-cs-beige/80 dark:text-cs-beige dark:hover:bg-cs-beige/20"
+            aria-label="A+ aumenta o tamanho da fonte da citação"
+            className="w-11 h-11 flex items-center justify-center rounded-full border text-sm font-lato font-bold transition-colors disabled:opacity-30 disabled:cursor-not-allowed border-cs-brown-lighter text-cs-brown-medium hover:bg-cs-brown-lighter/30 dark:border-cs-beige/80 dark:text-cs-beige dark:hover:bg-cs-beige/20"
           >
             A+
           </button>
         </div>
       </CardContent>
+
+      {/* Região de status do download — visível só para leitor de tela. */}
+      <p role="status" className="sr-only">
+        {status}
+      </p>
 
       {currentQuote && <ShareCard ref={shareCardRef} quote={currentQuote} />}
     </Card>
