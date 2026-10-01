@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Lint, TypeCheck, Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # `--legacy-peer-deps` é obrigatório aqui: sem ele o npm 10 quebra em
+      # `#loadPeerSet` (arborist) ao resolver o grafo de peers do vitest —
+      # "Cannot read properties of null (reading 'edgesOut')". BUG DO NPM,
+      # não do projeto (lecionario-web/mobile já instalam assim).
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Tests
+        run: npm run test
+
+      # Testa com o ambiente ADVERSÁRIO de propósito. Sem isto, a suíte só
+      # passa porque o CI acontece de não exportar `NODE_ENV` — e é
+      # exatamente aí que ela quebra: se alguém (ou um passo futuro do
+      # pipeline) exportar `NODE_ENV=production`, o React resolve o build de
+      # produção, `act()` deixa de existir e a suíte de componentes morre com
+      # um erro que não aponta o ambiente como causa.
+      #
+      # A variável inútil é o teste: `test.env` no vitest.config.ts tem de
+      # fixar `NODE_ENV=test` de qualquer forma. Se um dia alguém remover o
+      # pin, este passo quebra — que é o objetivo.
+      - name: Tests com ambiente hostil (NODE_ENV=production herdado)
+        env:
+          NODE_ENV: production
+          PUBLIC_ORIGIN: https://hostil.invalido
+          DATABASE_URL: postgresql://invalido://x@hostil:9999/db
+        run: npm run test

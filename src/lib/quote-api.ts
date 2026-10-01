@@ -29,13 +29,24 @@ function toLewisQuote(q: ApiQuote): LewisQuote {
   return { id: q.id, quote: q.text, source: q.source, theme: q.theme, affiliateUrl: q.affiliateUrl };
 }
 
+// `try/catch` é obrigatório, não defensivo: `if (!res.ok)` só trata a RESPOSTA
+// ruim, e a falha mais comum no mundo real — offline, DNS, timeout, corte de
+// rede — é o `fetch` REJEITAR. Sem o catch, a rejeição escapa e quebra o
+// contrato que os tipos prometem (`[]` / `null`), que é o que permite à UI
+// degradar com elegância em vez de estourar. Foi assim que a rota
+// /citacao/[id] acabou com `.catch(() => null)` colado nos dois call sites —
+// remendo no consumidor em vez de consertar o módulo.
 export async function fetchLewisQuotes(): Promise<LewisQuote[]> {
-  const res = await fetch(`${API_BASE}/quotes?author=${AUTHOR}`, {
-    cache: "no-store",
-  });
-  if (!res.ok) return [];
-  const data = (await res.json()) as ApiQuote[];
-  return data.map(toLewisQuote);
+  try {
+    const res = await fetch(`${API_BASE}/quotes?author=${AUTHOR}`, {
+      cache: "no-store",
+    });
+    if (!res.ok) return [];
+    const data = (await res.json()) as ApiQuote[];
+    return data.map(toLewisQuote);
+  } catch {
+    return [];
+  }
 }
 
 export async function fetchLewisQuoteById(id: string): Promise<LewisQuote | null> {
@@ -44,9 +55,13 @@ export async function fetchLewisQuoteById(id: string): Promise<LewisQuote | null
 }
 
 export async function fetchRandomLewisQuote(): Promise<LewisQuote | null> {
-  const res = await fetch(`${API_BASE}/quotes/random?author=${AUTHOR}`, {
-    cache: "no-store",
-  });
-  if (!res.ok) return null;
-  return toLewisQuote((await res.json()) as ApiQuote);
+  try {
+    const res = await fetch(`${API_BASE}/quotes/random?author=${AUTHOR}`, {
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    return toLewisQuote((await res.json()) as ApiQuote);
+  } catch {
+    return null;
+  }
 }
