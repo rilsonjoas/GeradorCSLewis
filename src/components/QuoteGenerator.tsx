@@ -118,7 +118,14 @@ export default function QuoteGenerator({ initialQuote }: QuoteGeneratorProps) {
   };
 
   return (
-    <Card className="w-full max-w-2xl gap-4 border-t-4 border-[var(--dourado)] py-4 text-center shadow-lg bg-white sm:gap-6 sm:py-6 dark:bg-cs-brown-dark">
+    /* CORREÇÃO 2026-10-16 (layout): os breakpoints `lg:` abaixo existem só
+       pra encurtar o card o suficiente pro rodapé do cluster caber na dobra
+       do desktop sem cortar nada (ver PageShell.tsx). Nada muda abaixo de
+       `lg` — mobile segue exatamente como estava, porque em tela baixa
+       rolar é o comportamento certo e esperado. O ganho no `lg` é de
+       ~64px; somado aos 80px devolvidos pelo PageShell e pelo AdUnit,
+       a página desce de 864px para ~732px. */
+    <Card className="w-full max-w-2xl gap-4 border-t-4 border-[var(--dourado)] py-4 text-center shadow-lg bg-white sm:gap-6 sm:py-6 lg:gap-4 lg:py-5 dark:bg-cs-brown-dark">
       <CardHeader className="px-4 pb-0 sm:px-6">
         {/* whitespace-nowrap + tamanhos por breakpoint: "GERADOR DE
             CITAÇÕES" e "C. S. Lewis" nunca quebram feios em telas estreitas.
@@ -138,7 +145,7 @@ export default function QuoteGenerator({ initialQuote }: QuoteGeneratorProps) {
         <h1 className="font-display mt-1 text-[40px] font-semibold leading-none text-cs-brown-dark sm:whitespace-nowrap dark:text-cs-beige sm:text-5xl md:text-6xl">
           C. S. Lewis
         </h1>
-        <div aria-hidden="true" className="divider-ornament mt-2 sm:mt-3">
+        <div aria-hidden="true" className="divider-ornament mt-2 sm:mt-3 lg:mt-2">
           <span className="divider-line" />
           <span className="text-sm">✦</span>
           <span className="divider-line divider-line-right" />
@@ -150,24 +157,26 @@ export default function QuoteGenerator({ initialQuote }: QuoteGeneratorProps) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Link para página relacionada a C.S. Lewis na Amazon"
-          className="block mx-auto mb-4 sm:mb-6"
+          className="block mx-auto mb-4 sm:mb-6 lg:mb-4"
         >
           {/* Moldura inspirada em .frame-tondo (Design Narniano) — mesma
               borda dourada dupla, adaptada pro tamanho de avatar deste
               projeto (o original é 320px, feito pra retrato de destaque,
               não pra avatar ao lado do gerador). Menor no mobile pra
-              encurtar a altura total do card. */}
+              encurtar a altura total do card; 2026-10-16: 104px no lg,
+              onde o retrato deixa de ser elemento dominante porque o
+              card inteiro precisa caber na dobra junto do rodapé. */}
           <Image
             src="/Lewis.jpg"
             alt="Retrato de C.S. Lewis"
             width={120}
             height={120}
-            className="h-20 w-20 rounded-full object-cover mx-auto shadow-md border-4 border-double border-[var(--dourado)] sm:h-24 sm:w-24 md:h-[120px] md:w-[120px]"
+            className="h-20 w-20 rounded-full object-cover mx-auto shadow-md border-4 border-double border-[var(--dourado)] sm:h-24 sm:w-24 md:h-[120px] md:w-[120px] lg:h-[104px] lg:w-[104px]"
             priority
           />
         </a>
 
-        <div className="mb-3 flex items-center justify-center">
+        <div className="mb-3 flex items-center justify-center lg:mb-2">
           {/* CORREÇÃO 2026-09-25 (4.1.3, AA): "Gerar nova citação" trocava o
               texto e a URL em silêncio — quem usa leitor de tela apertava o
               botão e não recebia confirmação nenhuma. aria-live="polite"
@@ -186,7 +195,7 @@ export default function QuoteGenerator({ initialQuote }: QuoteGeneratorProps) {
         </div>
 
         {currentQuote && currentQuote.source && (
-          <CardDescription className="font-lora text-base mb-8 min-h-[1.2em] text-cs-brown-light dark:text-[var(--dourado)]">
+          <CardDescription className="font-lora text-base mb-8 lg:mb-5 min-h-[1.2em] text-cs-brown-light dark:text-[var(--dourado)]">
             —{" "}
             {currentQuote.affiliateUrl ? (
               <a
@@ -205,7 +214,7 @@ export default function QuoteGenerator({ initialQuote }: QuoteGeneratorProps) {
           </CardDescription>
         )}
         {!currentQuote && (
-          <p className="font-lora text-base text-cs-brown-light dark:text-[var(--dourado)] mb-8 min-h-[1.2em]">
+          <p className="font-lora text-base text-cs-brown-light dark:text-[var(--dourado)] mb-8 lg:mb-5 min-h-[1.2em]">
             {/* Espaço para manter altura quando não há fonte */}
           </p>
         )}
@@ -239,7 +248,7 @@ export default function QuoteGenerator({ initialQuote }: QuoteGeneratorProps) {
             o controle de fonte já existe, subir para 44 não custou nada.
             2.5.3 (Label in Name, A): o nome acessível agora COMEÇA com o
             texto visível ("A+…"), para quem navega por voz funcionar. */}
-        <div className="mt-4 flex items-center justify-center gap-2">
+        <div className="mt-4 lg:mt-3 flex items-center justify-center gap-2">
           <button
             type="button"
             onClick={() => changeFontSize(-1)}
