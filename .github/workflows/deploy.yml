@@ -82,6 +82,13 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
+            # Achado 2026-10-16: sem `set -e` o script remoto segue depois de
+            # um erro. O `next build` falhou na VPS, o `make deploy` retornou
+            # erro, e mesmo assim o passo imprimiu "Deploy ok" e terminou
+            # verde com o container na imagem antiga. Agora qualquer comando
+            # que falhe aborta o deploy; a limpeza no fim é a exceção
+            # (`|| true`), porque não deve reprovar um deploy que funcionou.
+            set -e
             # Guarda de disco (INCIDENTES.md no infra, 2026-08-23): aborta
             # antes de piorar se a raiz estiver >=90%.
             USO=$(df --output=pcent / | tail -1 | tr -dc '0-9')
@@ -96,8 +103,8 @@ jobs:
             # Prune total pós-deploy (INCIDENTES.md 2026-08-23): sem filtro de
             # tempo — filtros semanais não pegam rajadas; e o prune simples (-f)
             # deixa registros compartilhados no disco (17,9GB invisíveis).
-            docker builder prune -af >/dev/null
-            docker image prune -f >/dev/null
+            docker builder prune -af >/dev/null || true
+            docker image prune -f >/dev/null || true
             USO=$(df --output=pcent / | tail -1 | tr -dc '0-9')
             echo "✅ Deploy ok — disco em ${USO}%"
 
