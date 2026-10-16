@@ -1,7 +1,17 @@
 FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+# `--legacy-peer-deps` é obrigatório aqui pelo mesmo motivo dos workflows:
+# sem ele o npm 10 quebra em `#loadPeerSet` (arborist) ao resolver o grafo de
+# peers do vitest — "Cannot read properties of null (reading 'edgesOut')".
+# Este estágio instala devDependencies (o runner não recebe node_modules), e o
+# vitest é justamente a dependência com o grafo conflitante.
+# ACHADO 2026-10-16: este `npm ci` estava SEM a flag. Como o vitest só entrou no
+# lockfile no commit 692f99c (que ainda não tinha sido publicado), o problema
+# estava latente e só apareceria no primeiro deploy que trouxesse esse commit —
+# build quebrado DENTRO do ssh-action, na VPS. Reproduzido e confirmado local
+# antes de corrigir: `npm ci` → ERESOLVE; `npm ci --legacy-peer-deps` → ok.
+RUN npm ci --legacy-peer-deps
 
 FROM node:22-alpine AS builder
 WORKDIR /app
