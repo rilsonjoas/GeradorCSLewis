@@ -2,9 +2,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { LewisQuote } from '@/lib/quote-api';
 
 /**
- * A página /citacao/[id] tem de distinguir "a citação não existe" (404) de "a API do Scriptorium não
- * respondeu" (500, que o crawler repete). Antes os dois viravam 404: um solavanco da API (por exemplo
- * durante o deploy dela) fazia uma citação válida parecer removida para o Google.
+ * A página /citacao/[id] tem de distinguir "a citação não existe" (404) de "não dá para saber, porque o
+ * Scriptorium está fora e a lista que o Gerador tem não é recente" (500, que o crawler repete). Antes os dois
+ * viravam 404: um solavanco da API (por exemplo durante o deploy dela) fazia uma citação válida parecer
+ * removida para o Google. Com o armazém, a maioria das quedas nem chega aqui: a página sai normalmente.
  */
 
 class NextNotFound extends Error {
@@ -22,10 +23,7 @@ vi.mock('@/components/QuoteGenerator', () => ({ default: () => null }));
 vi.mock('@/components/PageShell', () => ({ PageShell: ({ children }: { children: unknown }) => children }));
 
 const findLewisQuoteById = vi.fn();
-vi.mock('@/lib/quote-api', async () => {
-  const real = await vi.importActual<typeof import('@/lib/quote-api')>('@/lib/quote-api');
-  return { ...real, findLewisQuoteById: (id: string) => findLewisQuoteById(id), fetchLewisQuoteById: vi.fn() };
-});
+vi.mock('@/lib/quote-store', () => ({ findLewisQuoteById: (id: string) => findLewisQuoteById(id) }));
 
 const citacao: LewisQuote = { id: 'abc', quote: 'Texto.', source: 'Obra', theme: null, affiliateUrl: null };
 

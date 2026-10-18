@@ -71,36 +71,64 @@ C.S. Lewis é um dos autores que mais moldou minha forma de pensar fé, razão e
 
 ## 🔌 Integrações com outros projetos
 
-O Gerador **consome** uma API e não expõe nenhuma. Todas as citações vêm do Scriptorium (ADR 001); o acervo local
-`src/lib/quotes.ts` é histórico e **nenhum código o importa**.
+O Gerador **não depende de o Scriptorium estar no ar para funcionar**. A fonte da verdade das citações continua
+sendo a API do Scriptorium (ADR 001), mas o Gerador guarda o que precisa e tem uma cópia embutida de reserva.
 
-| Rota | Quem chama | Para quê |
-|---|---|---|
-| `GET api-scriptorium.narniano.com/api/v1/quotes?author=C. S. Lewis` | servidor (`sitemap.ts`, `/citacao/[id]`) | lista completa, para o sitemap e para achar uma citação pelo id |
-| `GET .../quotes/random?author=C. S. Lewis` | **navegador** (`QuoteGenerator`) | o botão de sortear |
+```
+navegador ──► /api/citacao/aleatoria (o próprio Gerador) ──► armazém de citações (servidor)
+                                                              1. lista em memória, fresca (10 min)
+                                                              2. senão, API do Scriptorium (limite de 3 s)
+                                                              3. se falhar: a última lista boa, mesmo vencida
+                                                              4. se o processo acabou de subir: cópia embutida
+```
 
-- `author` é o **nome** (`C. S. Lewis`), não o slug. O filtro do Scriptorium ignora caixa, espaço e pontuação (`C.S. Lewis` serve),
-  mas acento distingue e apelido não vale (`Lewis` devolve vazio).
-- Formato lido (`src/lib/quote-api.ts`): `id`, `text` (vira `quote`) e, opcionais, `source`, `theme`, `affiliateUrl`. **Campo ausente vira `null`**: a
-  especificação do Scriptorium os declara opcionais e anuláveis. Item da lista sem `id` ou `text` é descartado.
-- Não existe `GET /quotes/{id}`: achar uma citação pelo id baixa a lista inteira (~156 itens) a cada visita. Rota nova no Scriptorium resolveria; está no plano de longo prazo.
+- **O navegador nunca chama o Scriptorium.** O botão de sortear chama `GET /api/citacao/aleatoria`, que sorteia
+  **uniformemente** na lista do servidor (a mesma distribuição de antes, só que local). Resposta sem cache; o cabeçalho
+  `X-Citacao-Origem` diz de onde veio a lista: `ao-vivo` (acabou de vir do Scriptorium), `memoria` ou `reserva` (cópia embutida).
+- **Chamada ao Scriptorium:** `GET api-scriptorium.narniano.com/api/v1/quotes?author=C. S. Lewis`, no máximo uma a cada
+  10 minutos (o limite dele é 100 por minuto por IP, e todo o tráfego do Gerador sai de um IP só). Limite de tempo de **3 s**:
+  uma API lenta é pior que uma fora do ar. Depois de uma falha, não tenta de novo por 30 s. Lista **vazia** da API conta como
+  falha e não apaga a lista que o Gerador já tem. Várias visitas simultâneas dividem uma única chamada.
+- `author` é o **nome** (`C. S. Lewis`), não o slug. O filtro do Scriptorium ignora caixa, espaço e pontuação, mas acento
+  distingue e apelido não vale (`Lewis` devolve vazio).
+- **Formato lido** (`src/lib/quote-api.ts`): `id`, `text` (vira `quote`) e, opcionais, `source`, `theme`, `affiliateUrl`.
+  Campo ausente vira `null` (a especificação do Scriptorium os declara opcionais e anuláveis). Item sem `id` ou `text` é descartado.
+- **Frescor:** citação nova ou retirada no Scriptorium chega ao Gerador em até **10 minutos**.
 
-**O que acontece quando o Scriptorium não responde** (verificado com o build de produção, com e sem rede):
+**O que acontece quando o Scriptorium não responde** (medido com o build de produção, sem rede nenhuma):
 
 | Situação | Resposta |
 |---|---|
-| `/citacao/<id existente>`, API no ar | 200 |
-| `/citacao/<id que a API não conhece>`, API no ar | 404 |
-| `/citacao/<qualquer id>`, API fora do ar | **500** (o crawler tenta de novo). Antes dava 404: uma citação válida parecia removida |
-| `sitemap.xml`, API fora do ar | só a home (1 URL) em vez de 157; volta sozinho quando a API volta (`force-dynamic`, sem cache) |
-| Home (`/`) no primeiro carregamento, API fora do ar | a tela mostra "Clique no botão abaixo para gerar uma citação inspiradora!" e o botão tenta de novo |
-| Botão de sortear com uma citação na tela, API fora do ar | nada acontece: devolve `null` e a tela mantém a citação atual |
+| Home `/` | 200; o sorteio funciona normalmente |
+| Botão de sortear | 200, citação da **cópia embutida** (`X-Citacao-Origem: reserva`); sorteia de verdade, não devolve sempre a mesma |
+| `/citacao/<id que está na lista ou na cópia>` | 200 |
+| `/citacao/<id desconhecido>`, lista recente | 404 |
+| `/citacao/<id desconhecido>`, lista vencida ou só a cópia | **500** (o crawler tenta de novo): pode ser citação nova que só o Scriptorium conhece. Antes, qualquer falha dava 404 |
+| `sitemap.xml` | completo (157 URLs); antes caía para só a home |
+| API fora **depois** de o Gerador já ter a lista | continua servindo a última lista boa, mesmo vencida; não cai para a cópia embutida |
+
+### A cópia embutida (`src/data/lewis-quotes.snapshot.json`)
+É a última linha de defesa e **só serve quando o processo acabou de subir com o Scriptorium fora**. Fica só no servidor (confirmado:
+não aparece no JavaScript do navegador).
+- **Gerada, nunca editada à mão:** `npm run quotes:sync` regrava a partir da API (recusa menos de 50 citações ou ids repetidos);
+  `npm run quotes:sync -- --check` só compara. Guarda o formato da própria API; ordenada por id.
+- **Não pode apodrecer.** Uma citação **retirada** do acervo (fabricada, sem direito de uso) não pode continuar sendo servida pela
+  reserva. Por isso o canário do cluster compara esta cópia com a API de hora em hora: citação retirada ainda na cópia é **erro**;
+  cópia defasada (citações novas que faltam) é só aviso, e a reserva continua válida.
+- O CI confere que a cópia está bem formada (ao menos 50 itens, ids únicos, textos não vazios, links de compra só da Amazon, e que a
+  citação fabricada removida em 26/09/2026 não está nela). **Não** confere se está em dia com a API: isso exige rede.
+- **Quando regerar:** o canário avisou, ou depois de cadastrar/retirar citações no Scriptorium e querer a reserva em dia. Rode
+  `npm run quotes:sync`, revise a diferença no git e publique.
+- O link de compra (`affiliateUrl`, com a tag de afiliado) vem embutido na cópia; se a tag mudar, regere.
+- `src/lib/quotes.ts` (as 165 citações históricas) **não é a reserva** e nenhum código o importa: **ainda contém a citação
+  fabricada** removida do acervo e nunca passou pelo protocolo de verificação. Não o use como fallback.
 
 **Regras do cluster** (valem para as APIs de que este projeto depende):
 1. O "hoje" do cluster é `America/Sao_Paulo`; quem mostra um dia manda `?date=` (não se aplica ao Gerador, que não usa "do dia").
 2. Mudança de contrato da API é **aditiva**: campo novo e rota nova podem; remover, renomear ou trocar tipo só depois de migrar os consumidores.
-3. Um canário em produção confere o formato dessas rotas de hora em hora (`quotes?author=C. S. Lewis` com 50+ itens e `quotes/random`). O mapa completo
-   (todas as rotas, formatos, situações limite, runbook) está em `CONTRATOS-ENTRE-PROJETOS.md` no repositório de infraestrutura, que é privado.
+3. Um canário em produção confere o formato das rotas de que o Gerador depende, a cópia embutida contra a API e o sorteio do próprio
+   Gerador. O mapa completo (todas as rotas, formatos, situações limite, runbook) está em `CONTRATOS-ENTRE-PROJETOS.md` no repositório
+   de infraestrutura, que é privado.
 
 ## 📚 Citações (2026-08-20)
 
@@ -209,6 +237,7 @@ A estrutura de pastas principal segue o padrão do App Router do Next.js:
 │   └── favicon.ico
 ├── src/
 │   ├── app/
+│   │   ├── api/citacao/aleatoria/route.ts # Sorteio do botão (o navegador chama este, nunca o Scriptorium)
 │   │   ├── citacao/[id]/page.tsx # Página por citação — URL/metadados dinâmicos
 │   │   ├── robots.ts      # robots.txt dinâmico
 │   │   ├── sitemap.ts     # sitemap.xml dinâmico
@@ -223,16 +252,22 @@ A estrutura de pastas principal segue o padrão do App Router do Next.js:
 │   │   ├── ModeToggle.tsx  # Botão de modo escuro/claro
 │   │   ├── PageShell.tsx   # Wrapper de layout compartilhado
 │   │   └── theme-provider.tsx
+│   ├── data/
+│   │   └── lewis-quotes.snapshot.json # Cópia embutida (reserva), gerada por `npm run quotes:sync`; só no servidor
 │   └── lib/
-│       ├── quotes.ts      # Array com as 165 citações de C. S. Lewis
+│       ├── quote-api.ts   # Cliente do Scriptorium (limite de 3 s) e sorteio do navegador
+│       ├── quote-store.ts # Armazém do servidor: memória, última lista boa e cópia embutida
+│       ├── quotes.ts      # HISTÓRICO (165 citações; não é importado nem serve de reserva, ver "Integrações")
 │       └── utils.ts       # Utilitário do Shadcn/UI para `cn()`
+├── scripts/
+│   └── sync-quotes-snapshot.mjs # Gera/confere a cópia embutida a partir da API
 └── tailwind.config.ts     # Configuração do Tailwind CSS
 ```
 
 ## 💡 Lógica do Componente `QuoteGenerator`
 
--   **Estado por índice, não por objeto:** `currentIndex` (não a citação em si) é o estado — a citação exibida é derivada dele (`lewisQuotes[currentIndex]`). Isso é o que permite a URL por citação funcionar.
--   **URL por citação:** `generateNewQuote` sorteia um índice e chama `router.replace(\`/citacao/${randomIndex}\`)` — a URL sempre aponta pra citação em tela, sem precisar de um botão "copiar link" separado. `initialQuoteId` (prop vinda de `/citacao/[id]/page.tsx`) fixa o índice inicial quando se chega direto num link.
+-   **Estado: a citação, não um índice:** `currentQuote` guarda a citação inteira (`LewisQuote`: `id`, `quote`, `source`, `theme`, `affiliateUrl`), que vem do sorteio do Gerador. Antes (acervo local `quotes.ts`) o estado era um índice; isso acabou com o ADR 001.
+-   **URL por citação:** `generateNewQuote` chama `fetchRandomLewisQuote()` (a rota `/api/citacao/aleatoria` do próprio Gerador) e faz `router.replace(`/citacao/${quote.id}`)`, com o `id` (uuid) da citação: a URL sempre aponta pra citação em tela, sem um botão "copiar link" separado. Se o sorteio falhar (`null`), mantém a citação atual. `initialQuote` (prop vinda de `/citacao/[id]/page.tsx`) fixa a citação inicial quando se chega direto num link.
 -   **Tamanho de fonte ajustável:** botões "A-"/"A+" ciclam entre 5 passos de tamanho (`QUOTE_FONT_SIZES`); a preferência é salva em `localStorage` e restaurada num `useEffect` (não no estado inicial, pra não causar hydration mismatch entre servidor e cliente).
 -   **Baixar como imagem:** `handleDownloadImage` importa `html2canvas` sob demanda e renderiza o `ShareCard` (fora de tela) num PNG 1080×1080.
 -   **Links Dinâmicos:** a fonte de cada citação é um link pra busca na Amazon (`getAmazonSearchUrl`) — o termo inclui título do livro **+ "C. S. Lewis"**, já com o tag de afiliado.
