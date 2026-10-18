@@ -16,6 +16,25 @@ Segue o padrão comum documentado em `hetzner-infra/PADRAO-DE-ENGENHARIA.md`.
 
 ---
 
+## Resiliência: o que fazer quando as APIs do cluster falham (2026-10-17)
+
+**Política do cluster para quando uma API de que este projeto depende falha** (mapa completo em `CONTRATOS-ENTRE-PROJETOS.md`, seção 10, no repositório de infraestrutura, que é privado):
+1. **Card "do dia": some inteiro** (sem título solto, sem espaço reservado, sem erro de JavaScript) e **nunca** mostra conteúdo substituto, porque o "do dia" tem de ser o mesmo item em todo o cluster. Permitido reaproveitar o último valor bom **da mesma data**.
+2. **Sorteio ou lista: fallback permitido** (qualquer item do acervo serve): é o caso do Gerador, com uma cópia embutida vigiada pelo canário.
+3. **Falha de API nunca vira 404** numa página que existe: 500 ou 503, que o crawler repete.
+4. **Toda chamada tem limite de tempo**: uma API lenta é pior que uma fora do ar.
+5. **Esconder em silêncio exige um vigia**: o canário do cluster confere o formato das rotas de hora em hora.
+
+**Estado deste projeto.** O Gerador é o único consumidor **com fallback**, e a política o permite porque o sorteio aceita qualquer citação do acervo: o servidor guarda a lista em memória
+(10 min), usa a última lista boa se a API cair e, se acabou de subir, uma **cópia embutida** (`src/data/lewis-quotes.snapshot.json`). **Verificado com a imagem real de produção** em
+contêineres descartáveis (API fora: sorteio 200 da reserva, citação da cópia 200, sitemap com 157 URLs; API lenta: 1ª chamada 3,09 s e a seguinte 8 ms). Detalhes e a decisão de manter a cópia:
+`README.md`, seção "Integrações" (e `CONTRATOS-ENTRE-PROJETOS.md`, 2.7).
+
+**Itens abertos:**
+- [ ] **R6b (média): regerar a cópia embutida automaticamente** (PR gerado quando o canário acusar deriva, ou uma verificação agendada). Hoje: `npm run quotes:sync`, revisar o diff, publicar.
+- [ ] **Medir a janela pós-reinício do VPS** (quanto tempo o Gerador fica sem alcançar o Scriptorium depois de um reinício; não há `depends_on` entre eles). Se for longa, a cópia ganha importância; se for de segundos, reavaliar o custo.
+- [ ] **Procedimento ao retirar uma citação do Scriptorium:** regerar a cópia (`npm run quotes:sync`) e publicar; o canário acusa em até 1 h se for esquecido.
+
 ## Qualidade de Conteúdo (2026-08-22)
 
 Padrão cross-projeto: `Padrão de Qualidade de Conteúdo.md` no vault
