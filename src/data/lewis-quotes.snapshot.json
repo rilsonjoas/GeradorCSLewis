@@ -1,7 +1,7 @@
 {
-  "geradoEm": "2026-10-18T03:55:16.218Z",
+  "geradoEm": "2026-10-18T05:00:41.896Z",
   "fonte": "https://api-scriptorium.narniano.com/api/v1/quotes?author=C. S. Lewis",
-  "total": 152,
+  "total": 145,
   "citacoes": [
     {
       "id": "001889b0-439c-433b-bd15-61161ad1c92c",
@@ -48,9 +48,9 @@
     {
       "id": "0e70882b-3036-4999-8cf0-4559f09896a1",
       "text": "Se você está no caminho errado, voltar atrás significa progresso.",
-      "source": null,
+      "source": "Cristianismo Puro e Simples",
       "theme": null,
-      "affiliateUrl": null
+      "affiliateUrl": "https://www.amazon.com.br/s?k=Cristianismo%20Puro%20e%20Simples%20C.%20S.%20Lewis&tag=rilson-20"
     },
     {
       "id": "0ecb82c2-fd3d-4882-b4e3-7694c869d8a2",
@@ -65,13 +65,6 @@
       "source": "A Última Noite do Mundo",
       "theme": null,
       "affiliateUrl": "https://www.amazon.com.br/s?k=A%20%C3%9Altima%20Noite%20do%20Mundo%20C.%20S.%20Lewis&tag=rilson-20"
-    },
-    {
-      "id": "139977f6-ba73-45a8-bdf1-715b0bd0a7ca",
-      "text": "Uma coisa boa de ler livros velhos é que as modas não os afetam.",
-      "source": "Introdução a Sobre a encarnação de Atanásio",
-      "theme": null,
-      "affiliateUrl": "https://www.amazon.com.br/s?k=Introdu%C3%A7%C3%A3o%20a%20Sobre%20a%20encarna%C3%A7%C3%A3o%20de%20Atan%C3%A1sio%20C.%20S.%20Lewis&tag=rilson-20"
     },
     {
       "id": "13af9481-2d25-4913-9232-304d1c8cf397",
@@ -100,13 +93,6 @@
       "source": "Oração: Cartas a Malcolm",
       "theme": null,
       "affiliateUrl": "https://www.amazon.com.br/s?k=Ora%C3%A7%C3%A3o%3A%20Cartas%20a%20Malcolm%20C.%20S.%20Lewis&tag=rilson-20"
-    },
-    {
-      "id": "17f74df7-72e1-4848-8214-563574dc7120",
-      "text": "A paixão é o que nos leva a prometer. O amor é o que nos leva a cumprir as promessas.",
-      "source": null,
-      "theme": null,
-      "affiliateUrl": null
     },
     {
       "id": "1af329f1-71f6-4df6-9320-51b1ca179ab4",
@@ -398,9 +384,9 @@
     {
       "id": "65e113b5-1b70-494c-b769-30ae564164de",
       "text": "O menor ato de bondade hoje é a captura de um ponto estratégico a partir do qual se poderá ser capaz de seguir para vitórias que você nunca sonhou.",
-      "source": null,
+      "source": "Cristianismo Puro e Simples",
       "theme": null,
-      "affiliateUrl": null
+      "affiliateUrl": "https://www.amazon.com.br/s?k=Cristianismo%20Puro%20e%20Simples%20C.%20S.%20Lewis&tag=rilson-20"
     },
     {
       "id": "660de99e-1c18-4de8-927f-56bade2ccfe6",
@@ -440,7 +426,7 @@
     {
       "id": "67b54cc0-cf29-4487-87ff-3294a42235ad",
       "text": "Se você é produto de um universo materialista, porque não se sente em casa aqui? O peixe reclama de o mar ser molhado?",
-      "source": null,
+      "source": "Carta a Sheldon Vanauken, 23/12/1950",
       "theme": null,
       "affiliateUrl": null
     },
@@ -499,13 +485,6 @@
       "source": "O Peso da Glória",
       "theme": null,
       "affiliateUrl": "https://www.amazon.com.br/s?k=O%20Peso%20da%20Gl%C3%B3ria%20C.%20S.%20Lewis&tag=rilson-20"
-    },
-    {
-      "id": "73cf6ff3-b13e-4b1a-b5e7-f5c824fb01b5",
-      "text": "Se tentarmos encontrar algo neste mundo que satisfaça nosso desejo mais profundo, perceberemos que a satisfação deste mundo é apenas um eco fugaz da alegria para a qual fomos feitos.",
-      "source": "Surpreendido pela Alegria",
-      "theme": null,
-      "affiliateUrl": "https://www.amazon.com.br/s?k=Surpreendido%20pela%20Alegria%20C.%20S.%20Lewis&tag=rilson-20"
     },
     {
       "id": "740f12bd-2a2e-4457-8274-619dfbb99a12",
@@ -594,9 +573,9 @@
     {
       "id": "86587b88-093e-4239-8678-a87092bf465e",
       "text": "Não podemos confiar em nós mesmos nem em nossos melhores momentos. A única atitude fatal é se dar por satisfeito com qualquer coisa que não a perfeição.",
-      "source": null,
+      "source": "Cristianismo Puro e Simples",
       "theme": null,
-      "affiliateUrl": null
+      "affiliateUrl": "https://www.amazon.com.br/s?k=Cristianismo%20Puro%20e%20Simples%20C.%20S.%20Lewis&tag=rilson-20"
     },
     {
       "id": "8ac899f0-8874-4453-b38d-1c7dbb49bfd0",
@@ -632,13 +611,6 @@
       "source": "O Assunto do Céu",
       "theme": null,
       "affiliateUrl": "https://www.amazon.com.br/s?k=O%20Assunto%20do%20C%C3%A9u%20C.%20S.%20Lewis&tag=rilson-20"
-    },
-    {
-      "id": "913c5eef-1113-44f8-b93e-dbd579655c04",
-      "text": "A educação sem valores, por mais útil que seja, parece apenas fazer do homem um demônio mais esperto.",
-      "source": "A Abolição do Homem",
-      "theme": null,
-      "affiliateUrl": "https://www.amazon.com.br/s?k=A%20Aboli%C3%A7%C3%A3o%20do%20Homem%20C.%20S.%20Lewis&tag=rilson-20"
     },
     {
       "id": "9577b986-5eb1-4b14-ad2d-732355d07bd6",
@@ -688,13 +660,6 @@
       "source": "Oração: Cartas a Malcolm",
       "theme": null,
       "affiliateUrl": "https://www.amazon.com.br/s?k=Ora%C3%A7%C3%A3o%3A%20Cartas%20a%20Malcolm%20C.%20S.%20Lewis&tag=rilson-20"
-    },
-    {
-      "id": "a3dfbe3b-ec25-463d-a732-d8f76740f996",
-      "text": "O medo de ser 'fora' é mais forte que qualquer convicção moral.",
-      "source": "Aquela Fortaleza Medonha",
-      "theme": null,
-      "affiliateUrl": "https://www.amazon.com.br/s?k=Aquela%20Fortaleza%20Medonha%20C.%20S.%20Lewis&tag=rilson-20"
     },
     {
       "id": "a4f7ba31-8a70-4f5e-92fd-1b494eddbdde",
@@ -755,7 +720,7 @@
     {
       "id": "b50e13d4-3ec0-4801-9a98-5d18c825bce2",
       "text": "Ele nos amou, não porque somos amáveis, mas porque Ele é o amor.",
-      "source": null,
+      "source": "The Collected Letters of C. S. Lewis, vol. 3, p. 119",
       "theme": null,
       "affiliateUrl": null
     },
@@ -863,13 +828,6 @@
       "source": "Os Quatro Amores",
       "theme": null,
       "affiliateUrl": "https://www.amazon.com.br/s?k=Os%20Quatro%20Amores%20C.%20S.%20Lewis&tag=rilson-20"
-    },
-    {
-      "id": "d5518bea-e513-4c5a-8cf5-fef7293d37ab",
-      "text": "O céu não é silencioso — nós é que aprendemos a não ouvir.",
-      "source": "Aquela Fortaleza Medonha",
-      "theme": null,
-      "affiliateUrl": "https://www.amazon.com.br/s?k=Aquela%20Fortaleza%20Medonha%20C.%20S.%20Lewis&tag=rilson-20"
     },
     {
       "id": "d57523d2-c90b-409c-9ec1-062f0b006aca",
@@ -1059,13 +1017,6 @@
       "source": "Deus no Banco dos Réus",
       "theme": null,
       "affiliateUrl": "https://www.amazon.com.br/s?k=Deus%20no%20Banco%20dos%20R%C3%A9us%20C.%20S.%20Lewis&tag=rilson-20"
-    },
-    {
-      "id": "fef40aff-d1f1-4f30-a7fb-0b61c94e3a92",
-      "text": "A obediência é o remédio para a cegueira espiritual.",
-      "source": "Cartas de um diabo ao seu aprendiz",
-      "theme": null,
-      "affiliateUrl": "https://www.amazon.com.br/s?k=Cartas%20de%20um%20diabo%20ao%20seu%20aprendiz%20C.%20S.%20Lewis&tag=rilson-20"
     }
   ]
 }
