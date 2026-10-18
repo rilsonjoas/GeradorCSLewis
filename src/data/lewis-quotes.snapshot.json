@@ -1,7 +1,7 @@
 {
-  "geradoEm": "2026-10-18T01:02:00.975Z",
+  "geradoEm": "2026-10-18T03:55:16.218Z",
   "fonte": "https://api-scriptorium.narniano.com/api/v1/quotes?author=C. S. Lewis",
-  "total": 156,
+  "total": 152,
   "citacoes": [
     {
       "id": "001889b0-439c-433b-bd15-61161ad1c92c",
@@ -23,13 +23,6 @@
       "source": "Cristianismo Puro e Simples",
       "theme": null,
       "affiliateUrl": "https://www.amazon.com.br/s?k=Cristianismo%20Puro%20e%20Simples%20C.%20S.%20Lewis&tag=rilson-20"
-    },
-    {
-      "id": "033cd665-02ac-42b3-87ad-09e65c2b6bae",
-      "text": "Quando acontece algo que nos destrói a vida tal como ela é, e nos força a parar de viver assim, é isso que eu chamo de dor.",
-      "source": "A Anatomia de uma Dor",
-      "theme": null,
-      "affiliateUrl": "https://www.amazon.com.br/s?k=A%20Anatomia%20de%20uma%20Dor%20C.%20S.%20Lewis&tag=rilson-20"
     },
     {
       "id": "05523311-47f9-4ecd-85a7-c0f161c3153e",
@@ -95,13 +88,6 @@
       "affiliateUrl": "https://www.amazon.com.br/s?k=Sobre%20Hist%C3%B3rias%20C.%20S.%20Lewis&tag=rilson-20"
     },
     {
-      "id": "15cc0baa-b0a1-4907-bc57-3ccc46ebbaac",
-      "text": "A coisa mais perigosa que podemos fazer é apanhar uma fração da verdade e não perceber que ela é apenas uma fração.",
-      "source": null,
-      "theme": null,
-      "affiliateUrl": null
-    },
-    {
       "id": "173093a3-a557-4da9-a3a5-016f4b2fa778",
       "text": "Nós nos sentamos diante da arte para que algo aconteça conosco, não para fazer algo com ela. A primeira exigência é a rendição.",
       "source": "Um Experimento em Crítica Literária",
@@ -135,13 +121,6 @@
       "source": "Os Quatro Amores",
       "theme": null,
       "affiliateUrl": "https://www.amazon.com.br/s?k=Os%20Quatro%20Amores%20C.%20S.%20Lewis&tag=rilson-20"
-    },
-    {
-      "id": "208426db-a16a-407d-b2eb-3114a0120c1a",
-      "text": "O cristianismo não é doutrina que devemos acreditar, mas uma vida que devemos viver.",
-      "source": "O Peso da Glória",
-      "theme": null,
-      "affiliateUrl": "https://www.amazon.com.br/s?k=O%20Peso%20da%20Gl%C3%B3ria%20C.%20S.%20Lewis&tag=rilson-20"
     },
     {
       "id": "23930135-8d73-49fe-a812-afbdcbe718b5",
@@ -282,13 +261,6 @@
       "source": "Oração: Cartas a Malcolm",
       "theme": null,
       "affiliateUrl": "https://www.amazon.com.br/s?k=Ora%C3%A7%C3%A3o%3A%20Cartas%20a%20Malcolm%20C.%20S.%20Lewis&tag=rilson-20"
-    },
-    {
-      "id": "4c765bb2-e43a-4aa6-a2e7-5686649744cb",
-      "text": "Eu oro, porque eu não posso me ajudar. Isso não muda Deus, isso me muda.",
-      "source": null,
-      "theme": null,
-      "affiliateUrl": null
     },
     {
       "id": "4c8625bd-aff5-4dc9-ba37-a123a7129728",
