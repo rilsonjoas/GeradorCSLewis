@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "quotes:sync": "node scripts/sync-quotes-snapshot.mjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.2",
