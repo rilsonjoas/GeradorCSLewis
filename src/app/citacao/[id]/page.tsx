@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { fetchLewisQuoteById } from "@/lib/quote-api";
+import { fetchLewisQuoteById, findLewisQuoteById } from "@/lib/quote-api";
 import QuoteGenerator from "@/components/QuoteGenerator";
 import { PageShell } from "@/components/PageShell";
 
@@ -46,7 +46,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function QuotePage({ params }: Props) {
-  const quote = await fetchLewisQuoteById(params.id).catch(() => null);
+  // Diferente de `generateMetadata`, aqui NÃO engole a falha da API: se o Scriptorium não respondeu, o
+  // erro sobe e a página responde 500 (o crawler tenta de novo). Só "a API respondeu e a citação não
+  // existe" vira 404; antes os dois casos viravam 404 e um solavanco da API (por exemplo durante o
+  // deploy dele) fazia uma citação válida parecer removida.
+  const quote = await findLewisQuoteById(params.id);
   if (!quote) {
     notFound();
     return;

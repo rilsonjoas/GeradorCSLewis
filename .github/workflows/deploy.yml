@@ -3,6 +3,11 @@ name: Deploy VPS
 on:
   push:
     branches: [main]
+    # Mudança só de documentação não precisa rebuildar a imagem (o build na VPS é pesado).
+    # `public/**` e `src/**` continuam disparando.
+    paths-ignore:
+      - "*.md"
+      - "docs/**"
 
 permissions:
   contents: read
