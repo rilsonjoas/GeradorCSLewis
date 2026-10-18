@@ -3,6 +3,8 @@ import {
   fetchLewisQuoteById,
   fetchLewisQuotes,
   fetchRandomLewisQuote,
+  findLewisQuoteById,
+  QuoteApiUnavailableError,
 } from '../quote-api';
 
 /**
@@ -139,5 +141,100 @@ describe('fetchLewisQuoteById', () => {
   it('id inexistente → null (rota /citacao/[id] degrada)', async () => {
     stubFetch(true, [comCta]);
     expect(await fetchLewisQuoteById('nao-existe')).toBeNull();
+  });
+});
+
+describe('campos opcionais da API (a especificação do Scriptorium os declara opcionais E anuláveis)', () => {
+  // Achado do estudo da Fase 3 (2026-10-17): `source`, `theme` e `affiliateUrl` podem FALTAR na resposta,
+  // não só vir null. O app promete `null` em `LewisQuote`; sem normalizar, chegaria `undefined`.
+  const semCampos = { id: '33333333-3333-4333-8333-333333333333', text: 'Só id e texto.' };
+
+  it('campo ausente vira null, não undefined (lista)', async () => {
+    stubFetch(true, [semCampos]);
+    const [quote] = await fetchLewisQuotes();
+    expect(quote).toEqual({ id: semCampos.id, quote: semCampos.text, source: null, theme: null, affiliateUrl: null });
+  });
+
+  it('campo ausente vira null, não undefined (sorteio)', async () => {
+    stubFetch(true, semCampos);
+    const quote = await fetchRandomLewisQuote();
+    expect(quote?.source).toBeNull();
+    expect(quote?.theme).toBeNull();
+    expect(quote?.affiliateUrl).toBeNull();
+  });
+
+  it('string vazia em affiliateUrl NÃO é trocada por null (só ausência é)', async () => {
+    stubFetch(true, [{ ...comCta, affiliateUrl: '' }]);
+    const [quote] = await fetchLewisQuotes();
+    expect(quote.affiliateUrl).toBe('');
+  });
+});
+
+describe('resposta fora do formato esperado', () => {
+  it('itens sem id ou texto são descartados; os válidos continuam', async () => {
+    stubFetch(true, [comCta, { id: 'x' }, { text: 'sem id' }, null, 42, 'texto']);
+    const result = await fetchLewisQuotes();
+    expect(result.map((q) => q.id)).toEqual([comCta.id]);
+  });
+
+  it.each([
+    ['objeto em vez de lista', { error: 'x' }],
+    ['null', null],
+    ['texto', 'oops'],
+  ])('corpo %s → fetchLewisQuotes devolve [] e findLewisQuoteById sinaliza API indisponível', async (_n, corpo) => {
+    stubFetch(true, corpo);
+    expect(await fetchLewisQuotes()).toEqual([]);
+    await expect(findLewisQuoteById(comCta.id)).rejects.toBeInstanceOf(QuoteApiUnavailableError);
+  });
+
+  it('JSON inválido → API indisponível', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({ ok: true, status: 200, json: async () => { throw new SyntaxError('x'); } }),
+    );
+    await expect(findLewisQuoteById(comCta.id)).rejects.toBeInstanceOf(QuoteApiUnavailableError);
+    expect(await fetchLewisQuotes()).toEqual([]);
+  });
+
+  it('sorteio com corpo que não é uma citação → null', async () => {
+    stubFetch(true, { foo: 'bar' });
+    expect(await fetchRandomLewisQuote()).toBeNull();
+    stubFetch(true, [comCta]);
+    expect(await fetchRandomLewisQuote()).toBeNull();
+  });
+});
+
+describe('findLewisQuoteById: "a API deu um solavanco" é diferente de "a citação não existe"', () => {
+  it('achada → a citação', async () => {
+    stubFetch(true, [comCta, semCta]);
+    expect((await findLewisQuoteById(semCta.id))?.id).toBe(semCta.id);
+  });
+
+  it('a API respondeu e o id não está na lista → null (404 legítimo)', async () => {
+    stubFetch(true, [comCta]);
+    expect(await findLewisQuoteById('nao-existe')).toBeNull();
+  });
+
+  it('lista vazia VÁLIDA → null (o acervo pode estar vazio, não é falha)', async () => {
+    stubFetch(true, []);
+    expect(await findLewisQuoteById(comCta.id)).toBeNull();
+  });
+
+  it.each([429, 500, 502, 503, 504])('HTTP %i → lança QuoteApiUnavailableError', async (status) => {
+    stubFetch(false, undefined, status);
+    await expect(findLewisQuoteById(comCta.id)).rejects.toBeInstanceOf(QuoteApiUnavailableError);
+  });
+
+  it('erro de rede → lança QuoteApiUnavailableError, guardando a causa', async () => {
+    const causa = new Error('ECONNREFUSED');
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(causa));
+    const erro = await findLewisQuoteById(comCta.id).catch((e) => e);
+    expect(erro).toBeInstanceOf(QuoteApiUnavailableError);
+    expect((erro as Error).cause).toBe(causa);
+  });
+
+  it('a versão macia (fetchLewisQuoteById) continua devolvendo null nos dois casos', async () => {
+    stubFetch(false, undefined, 503);
+    expect(await fetchLewisQuoteById(comCta.id)).toBeNull();
   });
 });
