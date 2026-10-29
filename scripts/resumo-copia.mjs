@@ -4,7 +4,8 @@
  * fluxo `.github/workflows/sync-quotes.yml` abre. Só as citações contam: `geradoEm` e `total` mudam a cada
  * execução e não são diferença.
  *
- * Uso: node scripts/resumo-copia.mjs <antes.json> <depois.json>   (imprime o resumo em Markdown)
+ * Uso: node scripts/resumo-copia.mjs <antes.json> <depois.json>            imprime o resumo em Markdown
+ *      node scripts/resumo-copia.mjs --vazio <antes.json> <depois.json>    sai com 0 se NÃO há diferença nas citações, 1 se há
  */
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -29,9 +30,17 @@ export function resumir(antes, depois) {
   return { entram, saem, mudam, texto };
 }
 
+/** @param {{entram: unknown[], saem: unknown[], mudam: unknown[]}} r */
+export function temDiferenca(r) {
+  return r.entram.length + r.saem.length + r.mudam.length > 0;
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const [antes, depois] = process.argv.slice(2).map((f) => JSON.parse(readFileSync(f, "utf-8")));
+  const args = process.argv.slice(2);
+  const soVazio = args[0] === "--vazio";
+  const [antes, depois] = args.filter((a) => a !== "--vazio").map((f) => JSON.parse(readFileSync(f, "utf-8")));
   const r = resumir(antes, depois);
+  if (soVazio) process.exit(temDiferenca(r) ? 1 : 0);
   const linhas = [`**${r.texto}**`];
   if (r.saem.length) linhas.push(`- Saem (retiradas do acervo): ${r.saem.map((i) => `\`${i}\``).join(", ")}`);
   if (r.entram.length) linhas.push(`- Entram: ${r.entram.map((i) => `\`${i}\``).join(", ")}`);

@@ -53,6 +53,12 @@ jobs:
           BRANCH=chore/sync-quotes-snapshot
           cp src/data/lewis-quotes.snapshot.json "$RUNNER_TEMP/antes.json"
           npm run quotes:sync
+          # O `--check` pode ter falhado por uma oscilação da API (timeout, 5xx) e não por diferença real: se depois
+          # de regerar as citações são as mesmas, só `geradoEm` mudou. Não abrir PR (nem mexer em PR aberto) por isso.
+          if node scripts/resumo-copia.mjs --vazio "$RUNNER_TEMP/antes.json" src/data/lewis-quotes.snapshot.json; then
+            echo "Sem diferença real nas citações depois de regerar (o --check falhou por outro motivo); nada a fazer."
+            exit 0
+          fi
           RESUMO=$(node scripts/resumo-copia.mjs "$RUNNER_TEMP/antes.json" src/data/lewis-quotes.snapshot.json)
           printf '%s\n\n%s\n\n%s\n' \
             "A cópia embutida do Gerador está defasada em relação à API do Scriptorium." \

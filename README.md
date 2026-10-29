@@ -122,7 +122,8 @@ não aparece no JavaScript do navegador).
   regera o arquivo e abre (ou atualiza) um PR na branch `chore/sync-quotes-snapshot`, com o resumo do que entra, sai e muda
   (`scripts/resumo-copia.mjs`). **O merge é manual** e dispara o Deploy VPS. Sem diferença nas citações não abre PR (`geradoEm` muda a
   cada execução e não conta). PR criado pelo `GITHUB_TOKEN` não dispara o CI; o portão do Deploy VPS cobre. Exige, nas configurações
-  do repositório, que o Actions possa criar PRs (`can_approve_pull_request_reviews`).
+  do repositório, que o Actions possa criar PRs: `gh api -X PUT repos/rilsonjoas/GeradorCSLewis/actions/permissions/workflow -F can_approve_pull_request_reviews=true`
+  (só isso: o workflow já declara as próprias permissões, então o padrão do repositório continua em somente leitura).
 - **À mão:** `npm run quotes:sync`, revise a diferença no git e publique (o fluxo é o caminho normal; isto serve se o Actions estiver fora).
 - O link de compra (`affiliateUrl`, com a tag de afiliado) vem embutido na cópia; se a tag mudar, regere.
 - `src/lib/quotes.ts` (as 165 citações históricas) **não é a reserva** e nenhum código o importa: **ainda contém a citação
