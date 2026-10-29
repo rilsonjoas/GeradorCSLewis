@@ -117,8 +117,13 @@ não aparece no JavaScript do navegador).
   cópia defasada (citações novas que faltam) é só aviso, e a reserva continua válida.
 - O CI confere que a cópia está bem formada (ao menos 50 itens, ids únicos, textos não vazios, links de compra só da Amazon, e que a
   citação fabricada removida em 26/09/2026 não está nela). **Não** confere se está em dia com a API: isso exige rede.
-- **Quando regerar:** o canário avisou, ou depois de cadastrar/retirar citações no Scriptorium e querer a reserva em dia. Rode
-  `npm run quotes:sync`, revise a diferença no git e publique.
+- **Quem regera:** o fluxo `.github/workflows/sync-quotes.yml` roda todo dia às 09:00 UTC e sob demanda
+  (`gh workflow run sync-quotes.yml --repo rilsonjoas/GeradorCSLewis`). Se `quotes:sync -- --check` acusa diferença nas citações, ele
+  regera o arquivo e abre (ou atualiza) um PR na branch `chore/sync-quotes-snapshot`, com o resumo do que entra, sai e muda
+  (`scripts/resumo-copia.mjs`). **O merge é manual** e dispara o Deploy VPS. Sem diferença nas citações não abre PR (`geradoEm` muda a
+  cada execução e não conta). PR criado pelo `GITHUB_TOKEN` não dispara o CI; o portão do Deploy VPS cobre. Exige, nas configurações
+  do repositório, que o Actions possa criar PRs (`can_approve_pull_request_reviews`).
+- **À mão:** `npm run quotes:sync`, revise a diferença no git e publique (o fluxo é o caminho normal; isto serve se o Actions estiver fora).
 - O link de compra (`affiliateUrl`, com a tag de afiliado) vem embutido na cópia; se a tag mudar, regere.
 - `src/lib/quotes.ts` (as 165 citações históricas) **não é a reserva** e nenhum código o importa: **ainda contém a citação
   fabricada** removida do acervo e nunca passou pelo protocolo de verificação. Não o use como fallback.

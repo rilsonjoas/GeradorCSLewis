@@ -31,9 +31,9 @@ contêineres descartáveis (API fora: sorteio 200 da reserva, citação da cópi
 `README.md`, seção "Integrações" (e `CONTRATOS-ENTRE-PROJETOS.md`, 2.7).
 
 **Itens abertos:**
-- [ ] **R6b (média): regerar a cópia embutida automaticamente** (PR gerado quando o canário acusar deriva, ou uma verificação agendada). Hoje: `npm run quotes:sync`, revisar o diff, publicar.
+- [ ] **R6b (média): regerar a cópia embutida automaticamente.** Implementado em `.github/workflows/sync-quotes.yml` (PR diário ou sob demanda, merge manual); **falta o ensaio real depois do merge** (três execuções: em dia sem PR, defasada abre PR, repetida atualiza o mesmo). Marcar como feito só depois dele.
 - [ ] **Medir a janela pós-reinício do VPS** (quanto tempo o Gerador fica sem alcançar o Scriptorium depois de um reinício; não há `depends_on` entre eles). Se for longa, a cópia ganha importância; se for de segundos, reavaliar o custo.
-- [ ] **Procedimento ao retirar uma citação do Scriptorium:** regerar a cópia (`npm run quotes:sync`) e publicar; o canário acusa em até 1 h se for esquecido.
+- [ ] **Procedimento ao retirar uma citação do Scriptorium:** disparar o fluxo (`gh workflow run sync-quotes.yml --repo rilsonjoas/GeradorCSLewis`) ou esperar o PR do dia, conferir o diff e mesclar; o canário acusa em até 1 h se retirada ficar na cópia.
 
 ## Qualidade de Conteúdo (2026-08-22)
 
