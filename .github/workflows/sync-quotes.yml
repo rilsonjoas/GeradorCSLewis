@@ -1,0 +1,80 @@
+name: Sync quotes snapshot
+
+# Regera a cópia embutida de citações (src/data/lewis-quotes.snapshot.json) a partir da API do Scriptorium e abre um
+# PR quando ela está defasada. O merge continua manual e dispara o Deploy VPS (que tem o seu próprio portão).
+# Diário às 09:00 UTC (06:00 em Brasília) e sob demanda:
+#   gh workflow run sync-quotes.yml --repo rilsonjoas/GeradorCSLewis
+# O Actions pode atrasar ou pular execuções agendadas; o canário do cluster (hetzner-infra) é a rede de segurança.
+
+on:
+  schedule:
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-quotes
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Regerar a cópia e abrir o PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # `--check` compara só as citações. NÃO decidir por `git diff`: `geradoEm` muda a cada execução e abriria
+      # um PR por dia sem mudança real. Se a API estiver fora, o passo seguinte falha e o job fica vermelho.
+      - name: A cópia está em dia?
+        id: check
+        run: |
+          if npm run quotes:sync -- --check; then
+            echo "em_dia=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "em_dia=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Regerar e abrir (ou atualizar) o PR
+        if: steps.check.outputs.em_dia == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          BRANCH=chore/sync-quotes-snapshot
+          cp src/data/lewis-quotes.snapshot.json "$RUNNER_TEMP/antes.json"
+          npm run quotes:sync
+          # O `--check` pode ter falhado por uma oscilação da API (timeout, 5xx) e não por diferença real: se depois
+          # de regerar as citações são as mesmas, só `geradoEm` mudou. Não abrir PR (nem mexer em PR aberto) por isso.
+          if node scripts/resumo-copia.mjs --vazio "$RUNNER_TEMP/antes.json" src/data/lewis-quotes.snapshot.json; then
+            echo "Sem diferença real nas citações depois de regerar (o --check falhou por outro motivo); nada a fazer."
+            exit 0
+          fi
+          RESUMO=$(node scripts/resumo-copia.mjs "$RUNNER_TEMP/antes.json" src/data/lewis-quotes.snapshot.json)
+          printf '%s\n\n%s\n\n%s\n' \
+            "A cópia embutida do Gerador está defasada em relação à API do Scriptorium." \
+            "$RESUMO" \
+            "Gerado por \`.github/workflows/sync-quotes.yml\`. O CI não roda neste PR (PR criado pelo \`GITHUB_TOKEN\` não dispara workflows); o merge dispara o Deploy VPS, que tem o próprio portão (typecheck, lint, testes). Confira o diff de \`src/data/lewis-quotes.snapshot.json\` antes de mesclar." \
+            > "$RUNNER_TEMP/corpo.md"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C "$BRANCH"
+          git add src/data/lewis-quotes.snapshot.json
+          git commit -m "chore: regerar a cópia embutida de citações"
+          git push --force origin "$BRANCH"
+          ABERTO=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$ABERTO" ]; then
+            gh pr create --base "$BASE" --head "$BRANCH" --title "chore: regerar a cópia embutida de citações" --body-file "$RUNNER_TEMP/corpo.md"
+          else
+            gh pr edit "$ABERTO" --body-file "$RUNNER_TEMP/corpo.md"
+            echo "PR #$ABERTO atualizado"
+          fi
