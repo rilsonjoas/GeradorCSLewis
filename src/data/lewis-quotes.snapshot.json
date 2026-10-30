@@ -1,14 +1,21 @@
 {
-  "geradoEm": "2026-10-18T05:00:41.896Z",
+  "geradoEm": "2026-10-30T00:02:01.408Z",
   "fonte": "https://api-scriptorium.narniano.com/api/v1/quotes?author=C. S. Lewis",
-  "total": 144,
+  "total": 145,
   "citacoes": [
     {
       "id": "001889b0-439c-433b-bd15-61161ad1c92c",
-      "text": "Descende de Adão e Eva — É honra suficientemente grande para que o mendigo mais miserável possa andar de cabeça erguida. (ENSAIO: alterado de propósito)",
+      "text": "Descende de Adão e Eva — É honra suficientemente grande para que o mendigo mais miserável possa andar de cabeça erguida.",
       "source": "As crônicas de Nárnia: Príncipe Caspian",
       "theme": null,
       "affiliateUrl": "https://www.amazon.com.br/s?k=As%20cr%C3%B4nicas%20de%20N%C3%A1rnia%3A%20Pr%C3%ADncipe%20Caspian%20C.%20S.%20Lewis&tag=rilson-20"
+    },
+    {
+      "id": "0018d8f6-698b-4e92-ba12-18ac9ca13e68",
+      "text": "O Céu, uma vez alcançado, terá efeito retroativo e transformará em glória até mesmo essa agonia.",
+      "source": "O Grande Abismo",
+      "theme": "ceus",
+      "affiliateUrl": "https://www.amazon.com.br/s?k=O%20Grande%20Abismo%20C.%20S.%20Lewis&tag=rilson-20"
     },
     {
       "id": "014152b5-5ca3-4f42-8193-0d4c192fd20e",
