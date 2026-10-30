@@ -1,0 +1,1 @@
+Ensaio do fluxo sync-quotes.yml (30/10/2026): este arquivo existe so para o PR de ensaio e some junto com a branch.
