@@ -43,6 +43,14 @@ jobs:
             echo "em_dia=false" >> "$GITHUB_OUTPUT"
           fi
 
+      # A cópia já está em dia: um PR aberto por este fluxo ficou obsoleto (ex.: citação reativada antes do merge).
+      - name: Fechar o PR obsoleto, se houver
+        if: steps.check.outputs.em_dia == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE: ${{ github.ref_name }}
+        run: scripts/fechar-pr-obsoleto.sh
+
       - name: Regerar e abrir (ou atualizar) o PR
         if: steps.check.outputs.em_dia == 'false'
         env:
@@ -71,7 +79,7 @@ jobs:
           git add src/data/lewis-quotes.snapshot.json
           git commit -m "chore: regerar a cópia embutida de citações"
           git push --force origin "$BRANCH"
-          ABERTO=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          ABERTO=$(gh pr list --head "$BRANCH" --base "$BASE" --state open --json number --jq '.[0].number // empty')
           if [ -z "$ABERTO" ]; then
             gh pr create --base "$BASE" --head "$BRANCH" --title "chore: regerar a cópia embutida de citações" --body-file "$RUNNER_TEMP/corpo.md"
           else
