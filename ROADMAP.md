@@ -31,7 +31,7 @@ contêineres descartáveis (API fora: sorteio 200 da reserva, citação da cópi
 `README.md`, seção "Integrações" (e `CONTRATOS-ENTRE-PROJETOS.md`, 2.7).
 
 **Itens abertos:**
-- [ ] **R6b (média): regerar a cópia embutida automaticamente.** Implementado em `.github/workflows/sync-quotes.yml` (PR diário ou sob demanda, merge manual); **falta o ensaio real depois do merge** (três execuções: em dia sem PR, defasada abre PR, repetida atualiza o mesmo). Marcar como feito só depois dele.
+- [x] **R6b (média): regerar a cópia embutida automaticamente.** Feito em 29/10/2026: `.github/workflows/sync-quotes.yml` (diário 09:00 UTC e sob demanda; abre ou atualiza o PR da branch `chore/sync-quotes-snapshot` só quando as citações diferem; merge manual). Ensaiado no GitHub com 3 execuções reais: cópia em dia (job verde, passo de PR pulado, nenhum PR), cópia defasada (PR aberto com o resumo do que entra, sai e muda) e repetição (o mesmo PR atualizado, sem segundo PR). O canário do cluster compara também o conteúdo da cópia (aviso).
 - [ ] **Medir a janela pós-reinício do VPS** (quanto tempo o Gerador fica sem alcançar o Scriptorium depois de um reinício; não há `depends_on` entre eles). Se for longa, a cópia ganha importância; se for de segundos, reavaliar o custo.
 - [ ] **Procedimento ao retirar uma citação do Scriptorium:** disparar o fluxo (`gh workflow run sync-quotes.yml --repo rilsonjoas/GeradorCSLewis`) ou esperar o PR do dia, conferir o diff e mesclar; o canário acusa em até 1 h se retirada ficar na cópia.
 
